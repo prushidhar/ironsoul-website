@@ -9,6 +9,16 @@ const fadeUp: any = {
     visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
 };
 
+const slideInLeft: any = {
+    hidden: { opacity: 0, x: -50, scale: 0.9 },
+    visible: { opacity: 1, x: 0, scale: 1, transition: { duration: 1, ease: "easeOut" } }
+};
+
+const slideInRight: any = {
+    hidden: { opacity: 0, x: 50 },
+    visible: { opacity: 1, x: 0, transition: { duration: 1, ease: "easeOut", delay: 0.2 } }
+};
+
 const staggerContainer: any = {
     hidden: { opacity: 0 },
     visible: {
@@ -165,14 +175,16 @@ export default function Home() {
                     <motion.h2 className="section-title" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>Our Executive Committee</motion.h2>
                     
                     {/* Founder Spotlight */}
-                    <motion.div className="founder-spotlight" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
-                        <img src="/assets/bhanu.jpg" alt="Oggu Bhanu sasitha" className="founder-spotlight-photo" onError={(e: any) => e.target.src='/assets/avatar.jpg'} />
-                        <div className="founder-spotlight-content">
-                            <h3>Oggu Bhanu Sasitha</h3>
-                            <h4>Founder, Public Speaker & Motivator</h4>
-                            <p>Oggu Bhanu Sasitha has been struggling independently from birth to now, creating a brand for students to inspire and bring forth many "Bhanu’s" across the nation. She had the honour of meeting Prime Minister Narendra Modi in the Virtual Youth Budget Quest 2026, and has hosted numerous events as an MC, conducted impactful sessions as a public speaker, and inspired audiences as a motivational speaker. Through her initiatives in schools and universities, she continues to bring out hidden talents and channel them towards building a stronger nation.</p>
-                        </div>
-                    </motion.div>
+                    <div style={{ overflow: 'hidden', padding: '10px 0' }}>
+                        <motion.div className="founder-spotlight" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}>
+                            <motion.img src="/assets/bhanu.jpg" alt="Oggu Bhanu sasitha" className="founder-spotlight-photo" onError={(e: any) => e.target.src='/assets/avatar.jpg'} variants={slideInLeft} />
+                            <motion.div className="founder-spotlight-content" variants={slideInRight}>
+                                <h3>Oggu Bhanu Sasitha</h3>
+                                <h4>Founder, Public Speaker & Motivator</h4>
+                                <p>Oggu Bhanu Sasitha has been struggling independently from birth to now, creating a brand for students to inspire and bring forth many "Bhanu’s" across the nation. She had the honour of meeting Prime Minister Narendra Modi in the Virtual Youth Budget Quest 2026, and has hosted numerous events as an MC, conducted impactful sessions as a public speaker, and inspired audiences as a motivational speaker. Through her initiatives in schools and universities, she continues to bring out hidden talents and channel them towards building a stronger nation.</p>
+                            </motion.div>
+                        </motion.div>
+                    </div>
 
                     <motion.div className="team-grid" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={staggerContainer}>
 
