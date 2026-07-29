@@ -323,6 +323,7 @@ export default function Home() {
                     <div className="footer-brand">
                         <h2>IronSoul</h2>
                         <p>Strength in Soul, Power in Action.</p>
+                        <p style={{ marginTop: '0.5rem' }}>Contact us: <a href="mailto:ironsoul2026@gmail.com" style={{ color: '#d4af37', textDecoration: 'none', transition: 'color 0.3s' }} onMouseOver={(e) => e.currentTarget.style.color = '#fff'} onMouseOut={(e) => e.currentTarget.style.color = '#d4af37'}>ironsoul2026@gmail.com</a></p>
                     </div>
                     <div className="footer-copy">
                         <p>&copy; 2026 IronSoul Organisation. All rights reserved. | <a href="/admin/login" style={{ color: '#d4af37', textDecoration: 'none', transition: 'color 0.3s' }} onMouseOver={(e) => e.currentTarget.style.color = '#fff'} onMouseOut={(e) => e.currentTarget.style.color = '#d4af37'}>Admin Portal</a></p>
