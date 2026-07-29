@@ -4,12 +4,12 @@ import { useEffect, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Tilt from "react-parallax-tilt";
 
-const fadeUp = {
+const fadeUp: any = {
     hidden: { opacity: 0, y: 50 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
 };
 
-const staggerContainer = {
+const staggerContainer: any = {
     hidden: { opacity: 0 },
     visible: {
         opacity: 1,
