@@ -18,7 +18,7 @@ const staggerContainer = {
 };
 
 export default function Home() {
-    const [events, setEvents] = useState([]);
+    const [events, setEvents] = useState<any[]>([]);
     const [navActive, setNavActive] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     

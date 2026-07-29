@@ -10,7 +10,7 @@ export default function Dashboard() {
     const [description, setDescription] = useState('');
     const [image, setImage] = useState<File | null>(null);
     const [status, setStatus] = useState('');
-    const [events, setEvents] = useState([]);
+    const [events, setEvents] = useState<any[]>([]);
 
     useEffect(() => {
         // Check auth
