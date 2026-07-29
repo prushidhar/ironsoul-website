@@ -169,8 +169,8 @@ export default function Home() {
                             <motion.div className="team-card" variants={fadeUp}>
                                 <img src="/assets/bhanu.jpg" alt="Oggu Bhanu sasitha" className="team-photo" onError={(e: any) => e.target.src='/assets/avatar.jpg'} />
                                 <h3>Oggu Bhanu Sasitha</h3>
-                                <p className="team-role">CEO & FOUNDER</p>
-                                <p className="team-desc">Public Speaker, Motivator, and Aspiring Leader. Had the honour of meeting Prime Minister Narendra Modi.</p>
+                                <p className="team-role">Founder, Public Speaker & Motivator</p>
+                                <p className="team-desc" style={{ fontSize: '0.9rem', textAlign: 'left', lineHeight: '1.5' }}>Oggu Bhanu Sasitha, Founder of Iron soul Organisation, has been struggling independently from birth to now, creating a brand for students to inspire and bring forth many “Bhanu’s” across the nation. She had the honour of meeting Prime Minister Narendra Modi in the Virtual Youth Budget Quest 2026, and has hosted numerous events as an MC, conducted impactful sessions as a public speaker, and inspired audiences as a motivational speaker. Through her initiatives in schools and universities, she continues to bring out hidden talents and channel them towards building a stronger nation.</p>
                             </motion.div>
                         </Tilt>
 
@@ -229,14 +229,12 @@ export default function Home() {
                             <motion.div className="program-card" variants={fadeUp} style={{ height: '100%', boxShadow: '0 10px 40px rgba(0,0,0,0.6)' }}>
                                 <div className="program-icon">🏫</div>
                                 <h3>Plan for Schools</h3>
-                                <ul className="program-list">
-                                    <li>Introduction & Awareness</li>
-                                    <li>Skill-Building (JAM Sessions, Workshops, Role Assignments)</li>
-                                    <li>Events & Activities</li>
-                                    <li>Mentorship & Development</li>
-                                    <li>Community Impact</li>
-                                </ul>
+                                <div className="program-list" style={{ textAlign: 'left', margin: '1rem 0' }}>
+                                    <p><strong>🎤 Session Structure:</strong> Orientation + JAM session (1 hr), Motivational talk + soft skill activity (1–2 hrs)</p>
+                                    <p style={{ marginTop: '0.5rem' }}><strong>🏆 Prizes:</strong> Best Speaker, Most Confident Student, Participation E-Certificates for all.</p>
+                                </div>
                                 <div className="pricing">
+                                    <p><strong>Session Cost:</strong> ₹2,000 – ₹5,000 / session</p>
                                     <p><strong>Membership Fee:</strong> ₹100 – ₹200 / year</p>
                                     <p><em>Benefits: JAM sessions, workshops, certificates, recognition badges</em></p>
                                 </div>
@@ -247,19 +245,32 @@ export default function Home() {
                             <motion.div className="program-card" variants={fadeUp} style={{ height: '100%', boxShadow: '0 10px 40px rgba(0,0,0,0.6)' }}>
                                 <div className="program-icon">🎓</div>
                                 <h3>Plan for Colleges</h3>
-                                <ul className="program-list">
-                                    <li>Orientation & Awareness</li>
-                                    <li>Recruitment & JAM Sessions</li>
-                                    <li>Skill-Building Workshops (Communication, Leadership, EQ)</li>
-                                    <li>Events (Motivational Seminars, Soft-Skill Competitions)</li>
-                                    <li>Recognition, Growth & Ambassador Program</li>
-                                </ul>
+                                <div className="program-list" style={{ textAlign: 'left', margin: '1rem 0' }}>
+                                    <p><strong>🎤 Session Structure:</strong> Orientation + JAM session (1–2 hrs), Advanced workshops (communication, leadership, emotional intelligence), Motivational seminar (2–3 hrs)</p>
+                                    <p style={{ marginTop: '0.5rem' }}><strong>🏆 Prizes:</strong> Best Speaker, Most Inspirational Leader, Best Communicator, Participation E-Certificates for all.</p>
+                                </div>
                                 <div className="pricing">
+                                    <p><strong>Session Cost:</strong> ₹5,000 – ₹10,000 / session</p>
                                     <p><strong>Membership Fee:</strong> ₹300 – ₹500 / year</p>
-                                    <p><em>Benefits: Leadership opportunities, advanced workshops, priority in events, Internships.</em></p>
+                                    <p><em>Benefits: Leadership opportunities, advanced workshops, recognition badges, priority in events, Internships.</em></p>
                                 </div>
                             </motion.div>
                         </Tilt>
+                    </motion.div>
+                </div>
+            </section>
+
+            {/* Thank You Section */}
+            <section className="section bg-alt" style={{ padding: '4rem 0' }}>
+                <div className="container" style={{ textAlign: 'center', maxWidth: '800px' }}>
+                    <motion.h2 className="section-title" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>Thank You</motion.h2>
+                    <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} style={{ fontSize: '1.1rem', lineHeight: '1.8', color: '#ccc' }}>
+                        <p style={{ marginBottom: '1rem' }}>Ironsoul Organisation expresses its deepest gratitude to all the schools, colleges, students, faculty, and supporters who have stood with us in this journey. Your encouragement has been the driving force behind our mission to empower youth with confidence, resilience, and leadership.</p>
+                        <p style={{ marginBottom: '1rem' }}>We thank the students who participated in our JAM sessions, workshops, and motivational events — each of you represents the spirit of strength and inspiration that Ironsoul stands for.</p>
+                        <p style={{ marginBottom: '1rem' }}>Special thanks to our mentors, volunteers, and well wishers who continue to guide and support us. Every word of encouragement, every smile of appreciation, and every moment of collaboration strengthens our resolve to create many more "Bhanu’s" - individuals who rise with courage, inspire others, and contribute meaningfully to society.</p>
+                        <p style={{ marginBottom: '1.5rem' }}>Together, we believe in building a brighter tomorrow where every student discovers their true potential and becomes a beacon of hope for the nation.</p>
+                        <p style={{ color: '#d4af37', fontWeight: 'bold', fontSize: '1.3rem' }}>Strength in Soul, Power in Action.</p>
+                        <p>- Iron soul Organisation</p>
                     </motion.div>
                 </div>
             </section>
