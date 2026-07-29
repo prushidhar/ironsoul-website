@@ -325,7 +325,7 @@ export default function Home() {
                         <p>Strength in Soul, Power in Action.</p>
                     </div>
                     <div className="footer-copy">
-                        <p>&copy; 2026 IronSoul Organisation. All rights reserved.</p>
+                        <p>&copy; 2026 IronSoul Organisation. All rights reserved. | <a href="/admin/login" style={{ color: '#d4af37', textDecoration: 'none', transition: 'color 0.3s' }} onMouseOver={(e) => e.currentTarget.style.color = '#fff'} onMouseOut={(e) => e.currentTarget.style.color = '#d4af37'}>Admin Portal</a></p>
                     </div>
                 </div>
             </footer>
