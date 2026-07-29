@@ -276,6 +276,49 @@ a {
     font-size: 1.1rem;
 }
 
+/* Founder Spotlight */
+.founder-spotlight {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    padding: 3rem;
+    margin-bottom: 4rem;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+}
+
+.founder-spotlight-photo {
+    width: 250px;
+    height: 250px;
+    border-radius: 20px;
+    object-fit: cover;
+    border: 3px solid rgba(212, 175, 55, 0.4);
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.15);
+    flex-shrink: 0;
+}
+
+.founder-spotlight-content h3 {
+    font-size: 2.2rem;
+    color: var(--accent-gold);
+    margin-bottom: 0.5rem;
+}
+
+.founder-spotlight-content h4 {
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+}
+
+.founder-spotlight-content p {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: #ddd;
+}
+
 /* Team Section */
 .team-grid {
     display: grid;
@@ -477,6 +520,12 @@ footer {
 @media (max-width: 768px) {
     .hamburger {
         display: flex;
+    }
+    
+    .founder-spotlight {
+        flex-direction: column;
+        text-align: center;
+        padding: 2rem;
     }
     
     .nav-links {

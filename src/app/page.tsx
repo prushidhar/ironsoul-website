@@ -163,16 +163,18 @@ export default function Home() {
             <section id="team" className="section">
                 <div className="container">
                     <motion.h2 className="section-title" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>Our Executive Committee</motion.h2>
+                    
+                    {/* Founder Spotlight */}
+                    <motion.div className="founder-spotlight" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
+                        <img src="/assets/bhanu.jpg" alt="Oggu Bhanu sasitha" className="founder-spotlight-photo" onError={(e: any) => e.target.src='/assets/avatar.jpg'} />
+                        <div className="founder-spotlight-content">
+                            <h3>Oggu Bhanu Sasitha</h3>
+                            <h4>Founder, Public Speaker & Motivator</h4>
+                            <p>Oggu Bhanu Sasitha has been struggling independently from birth to now, creating a brand for students to inspire and bring forth many "Bhanu’s" across the nation. She had the honour of meeting Prime Minister Narendra Modi in the Virtual Youth Budget Quest 2026, and has hosted numerous events as an MC, conducted impactful sessions as a public speaker, and inspired audiences as a motivational speaker. Through her initiatives in schools and universities, she continues to bring out hidden talents and channel them towards building a stronger nation.</p>
+                        </div>
+                    </motion.div>
+
                     <motion.div className="team-grid" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={staggerContainer}>
-                        
-                        <Tilt tiltMaxAngleX={10} tiltMaxAngleY={10} scale={1.05}>
-                            <motion.div className="team-card" variants={fadeUp}>
-                                <img src="/assets/bhanu.jpg" alt="Oggu Bhanu sasitha" className="team-photo" onError={(e: any) => e.target.src='/assets/avatar.jpg'} />
-                                <h3>Oggu Bhanu Sasitha</h3>
-                                <p className="team-role">Founder, Public Speaker & Motivator</p>
-                                <p className="team-desc" style={{ fontSize: '0.9rem', textAlign: 'left', lineHeight: '1.5' }}>Oggu Bhanu Sasitha, Founder of Iron soul Organisation, has been struggling independently from birth to now, creating a brand for students to inspire and bring forth many “Bhanu’s” across the nation. She had the honour of meeting Prime Minister Narendra Modi in the Virtual Youth Budget Quest 2026, and has hosted numerous events as an MC, conducted impactful sessions as a public speaker, and inspired audiences as a motivational speaker. Through her initiatives in schools and universities, she continues to bring out hidden talents and channel them towards building a stronger nation.</p>
-                            </motion.div>
-                        </Tilt>
 
                         <Tilt tiltMaxAngleX={10} tiltMaxAngleY={10} scale={1.05}>
                             <motion.div className="team-card" variants={fadeUp}>
