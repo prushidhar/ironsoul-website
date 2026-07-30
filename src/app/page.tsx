@@ -327,7 +327,8 @@ export default function Home() {
                                     <option value="">Select an option...</option>
                                     <option value="school_member">School Membership (₹100-200/yr)</option>
                                     <option value="college_member">College Membership (₹300-500/yr)</option>
-                                    <option value="host_session">Hosting a Session at my Campus</option>
+                                    <option value="school_session">Hosting a School Session</option>
+                                    <option value="college_session">Hosting a College Session</option>
                                 </select>
                             </div>
 
