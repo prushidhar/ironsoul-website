@@ -53,3 +53,26 @@ export async function DELETE(request: Request) {
         return NextResponse.json({ error: 'Failed to delete testimonial' }, { status: 500 });
     }
 }
+
+export async function PUT(request: Request) {
+    try {
+        const body = await request.json();
+        const { id, quote, author } = body;
+
+        if (!id || !quote || !author) {
+            return NextResponse.json({ error: 'ID, quote, and author are required' }, { status: 400 });
+        }
+
+        const { data, error } = await supabase
+            .from('testimonials')
+            .update({ quote, author })
+            .eq('id', id)
+            .select();
+            
+        if (error) throw error;
+        return NextResponse.json(data[0]);
+    } catch (err) {
+        console.error(err);
+        return NextResponse.json({ error: 'Failed to update testimonial' }, { status: 500 });
+    }
+}

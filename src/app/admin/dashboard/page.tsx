@@ -18,11 +18,13 @@ export default function Dashboard() {
 
     // Stats State
     const [stats, setStats] = useState<any[]>([]);
+    const [editStatId, setEditStatId] = useState('');
     const [statLabel, setStatLabel] = useState('');
     const [statValue, setStatValue] = useState('');
 
     // Testimonials State
     const [testimonials, setTestimonials] = useState<any[]>([]);
+    const [editTestimonialId, setEditTestimonialId] = useState('');
     const [testQuote, setTestQuote] = useState('');
     const [testAuthor, setTestAuthor] = useState('');
 
@@ -45,12 +47,20 @@ export default function Dashboard() {
         if (res.ok) fetchData();
     };
 
+    // --- EVENTS HANDLERS ---
+    const handleEventEdit = (ev: any) => {
+        setEditEventId(ev.id); setEventTitle(ev.title); setEventDesc(ev.description || ''); setEventImage(null);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+    const cancelEventEdit = () => {
+        setEditEventId(''); setEventTitle(''); setEventDesc(''); setEventImage(null);
+    };
     const handleEventUpload = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!editEventId && (!eventImage || !eventTitle)) return alert('Title and Image required!');
         if (editEventId && !eventTitle) return alert('Title is required!');
         
-        setStatus('Saving Event...');
+        setStatus(editEventId ? 'Updating Event...' : 'Saving Event...');
         const formData = new FormData();
         if (editEventId) formData.append('id', editEventId);
         formData.append('title', eventTitle);
@@ -60,41 +70,61 @@ export default function Dashboard() {
         const res = await fetch('/api/events', { method: editEventId ? 'PUT' : 'POST', body: formData });
         if (res.ok) {
             setStatus('Event Saved!');
-            setEditEventId(''); setEventTitle(''); setEventDesc(''); setEventImage(null);
+            cancelEventEdit();
             fetchData();
         } else setStatus('Failed to save event.');
         setTimeout(() => setStatus(''), 3000);
     };
 
+    // --- STATS HANDLERS ---
+    const handleStatEdit = (st: any) => {
+        setEditStatId(st.id); setStatLabel(st.label); setStatValue(st.value);
+    };
+    const cancelStatEdit = () => {
+        setEditStatId(''); setStatLabel(''); setStatValue('');
+    };
     const handleStatUpload = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!statLabel || !statValue) return alert('Label and value required!');
-        setStatus('Saving Statistic...');
+        setStatus(editStatId ? 'Updating Statistic...' : 'Saving Statistic...');
+        
+        const payload = editStatId ? { id: editStatId, label: statLabel, value: statValue } : { label: statLabel, value: statValue };
+        
         const res = await fetch('/api/statistics', {
-            method: 'POST',
+            method: editStatId ? 'PUT' : 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ label: statLabel, value: statValue })
+            body: JSON.stringify(payload)
         });
         if (res.ok) {
             setStatus('Statistic Saved!');
-            setStatLabel(''); setStatValue('');
+            cancelStatEdit();
             fetchData();
         } else setStatus('Failed to save statistic.');
         setTimeout(() => setStatus(''), 3000);
     };
 
+    // --- TESTIMONIALS HANDLERS ---
+    const handleTestimonialEdit = (t: any) => {
+        setEditTestimonialId(t.id); setTestQuote(t.quote); setTestAuthor(t.author);
+    };
+    const cancelTestimonialEdit = () => {
+        setEditTestimonialId(''); setTestQuote(''); setTestAuthor('');
+    };
     const handleTestimonialUpload = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!testQuote || !testAuthor) return alert('Quote and author required!');
-        setStatus('Saving Testimonial...');
+        setStatus(editTestimonialId ? 'Updating Testimonial...' : 'Saving Testimonial...');
+        
+        const payload = editTestimonialId ? { id: editTestimonialId, quote: testQuote, author: testAuthor } : { quote: testQuote, author: testAuthor };
+
         const res = await fetch('/api/testimonials', {
-            method: 'POST',
+            method: editTestimonialId ? 'PUT' : 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ quote: testQuote, author: testAuthor })
+            body: JSON.stringify(payload)
         });
         if (res.ok) {
             setStatus('Testimonial Saved!');
-            setTestQuote(''); setTestAuthor('');
+            cancelTestimonialEdit();
             fetchData();
         } else setStatus('Failed to save testimonial.');
         setTimeout(() => setStatus(''), 3000);
@@ -122,7 +152,10 @@ export default function Dashboard() {
                             <label>Event Image {editEventId && '(Leave empty to keep current)'}</label>
                             <input type="file" accept="image/*" onChange={(e) => setEventImage(e.target.files?.[0] || null)} required={!editEventId} />
                         </div>
-                        <button type="submit" className="btn-primary btn-submit">{editEventId ? 'Update Event' : 'Upload Event'}</button>
+                        <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+                            <button type="submit" className="btn-primary btn-submit" style={{ margin: 0 }}>{editEventId ? 'Update Event' : 'Add Event'}</button>
+                            {editEventId && <button type="button" onClick={cancelEventEdit} className="btn-primary" style={{ margin: 0, background: '#333', color: '#fff' }}>Cancel</button>}
+                        </div>
                     </form>
                 </div>
                 <div>
@@ -133,7 +166,10 @@ export default function Dashboard() {
                                 <div style={{ flex: 1 }}>
                                     <h4 style={{ margin: 0 }}>{ev.title}</h4>
                                 </div>
-                                <button onClick={() => handleDelete('events', ev.id)} style={{ background: '#ff4444', color: '#fff', border: 'none', padding: '0.3rem 0.8rem', borderRadius: '5px', cursor: 'pointer' }}>Delete</button>
+                                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                    <button onClick={() => handleEventEdit(ev)} style={{ background: '#d4af37', color: '#000', border: 'none', padding: '0.3rem 0.8rem', borderRadius: '5px', cursor: 'pointer', fontSize: '0.8rem' }}>Edit</button>
+                                    <button onClick={() => handleDelete('events', ev.id)} style={{ background: '#ff4444', color: '#fff', border: 'none', padding: '0.3rem 0.8rem', borderRadius: '5px', cursor: 'pointer', fontSize: '0.8rem' }}>Delete</button>
+                                </div>
                             </div>
                         ))}
                     </div>
@@ -154,7 +190,10 @@ export default function Dashboard() {
                             <label>Label (e.g., Workshops Conducted)</label>
                             <input type="text" value={statLabel} onChange={(e) => setStatLabel(e.target.value)} required />
                         </div>
-                        <button type="submit" className="btn-primary btn-submit">Add Statistic</button>
+                        <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+                            <button type="submit" className="btn-primary btn-submit" style={{ margin: 0 }}>{editStatId ? 'Update Statistic' : 'Add Statistic'}</button>
+                            {editStatId && <button type="button" onClick={cancelStatEdit} className="btn-primary" style={{ margin: 0, background: '#333', color: '#fff' }}>Cancel</button>}
+                        </div>
                     </form>
                 </div>
                 <div>
@@ -165,7 +204,10 @@ export default function Dashboard() {
                                     <h4 style={{ margin: 0, color: '#d4af37' }}>{st.value}+</h4>
                                     <p style={{ margin: 0, fontSize: '0.9rem' }}>{st.label}</p>
                                 </div>
-                                <button onClick={() => handleDelete('statistics', st.id)} style={{ background: '#ff4444', color: '#fff', border: 'none', padding: '0.3rem 0.8rem', borderRadius: '5px', cursor: 'pointer' }}>Delete</button>
+                                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                    <button onClick={() => handleStatEdit(st)} style={{ background: '#d4af37', color: '#000', border: 'none', padding: '0.3rem 0.8rem', borderRadius: '5px', cursor: 'pointer', fontSize: '0.8rem' }}>Edit</button>
+                                    <button onClick={() => handleDelete('statistics', st.id)} style={{ background: '#ff4444', color: '#fff', border: 'none', padding: '0.3rem 0.8rem', borderRadius: '5px', cursor: 'pointer', fontSize: '0.8rem' }}>Delete</button>
+                                </div>
                             </div>
                         ))}
                     </div>
@@ -186,7 +228,10 @@ export default function Dashboard() {
                             <label>Author / Role</label>
                             <input type="text" value={testAuthor} onChange={(e) => setTestAuthor(e.target.value)} required placeholder="e.g. Rahul S., Student" />
                         </div>
-                        <button type="submit" className="btn-primary btn-submit">Add Testimonial</button>
+                        <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+                            <button type="submit" className="btn-primary btn-submit" style={{ margin: 0 }}>{editTestimonialId ? 'Update Testimonial' : 'Add Testimonial'}</button>
+                            {editTestimonialId && <button type="button" onClick={cancelTestimonialEdit} className="btn-primary" style={{ margin: 0, background: '#333', color: '#fff' }}>Cancel</button>}
+                        </div>
                     </form>
                 </div>
                 <div>
@@ -197,7 +242,10 @@ export default function Dashboard() {
                                     <p style={{ margin: '0 0 0.5rem 0', fontStyle: 'italic', fontSize: '0.9rem' }}>"{test.quote}"</p>
                                     <h4 style={{ margin: 0, color: '#d4af37', fontSize: '0.8rem' }}>- {test.author}</h4>
                                 </div>
-                                <button onClick={() => handleDelete('testimonials', test.id)} style={{ background: '#ff4444', color: '#fff', border: 'none', padding: '0.3rem 0.8rem', borderRadius: '5px', cursor: 'pointer' }}>Delete</button>
+                                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                    <button onClick={() => handleTestimonialEdit(test)} style={{ background: '#d4af37', color: '#000', border: 'none', padding: '0.3rem 0.8rem', borderRadius: '5px', cursor: 'pointer', fontSize: '0.8rem' }}>Edit</button>
+                                    <button onClick={() => handleDelete('testimonials', test.id)} style={{ background: '#ff4444', color: '#fff', border: 'none', padding: '0.3rem 0.8rem', borderRadius: '5px', cursor: 'pointer', fontSize: '0.8rem' }}>Delete</button>
+                                </div>
                             </div>
                         ))}
                     </div>

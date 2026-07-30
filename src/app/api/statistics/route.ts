@@ -53,3 +53,26 @@ export async function DELETE(request: Request) {
         return NextResponse.json({ error: 'Failed to delete statistic' }, { status: 500 });
     }
 }
+
+export async function PUT(request: Request) {
+    try {
+        const body = await request.json();
+        const { id, label, value } = body;
+
+        if (!id || !label || value === undefined) {
+            return NextResponse.json({ error: 'ID, label, and value are required' }, { status: 400 });
+        }
+
+        const { data, error } = await supabase
+            .from('statistics')
+            .update({ label, value: Number(value) })
+            .eq('id', id)
+            .select();
+            
+        if (error) throw error;
+        return NextResponse.json(data[0]);
+    } catch (err) {
+        console.error(err);
+        return NextResponse.json({ error: 'Failed to update statistic' }, { status: 500 });
+    }
+}
