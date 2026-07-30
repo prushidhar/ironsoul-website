@@ -3,17 +3,18 @@ import { cookies } from 'next/headers';
 
 export async function POST(request: Request) {
     try {
-        const { password } = await request.json();
+        const { username, password } = await request.json();
         
+        const validUsername = process.env.ADMIN_USERNAME || 'ironsoul2026@gmail.com';
         const validPassword = process.env.ADMIN_PASSWORD || 'admin';
         
-        if (password === validPassword) {
+        if (username === validUsername && password === validPassword) {
             const cookieStore = await cookies();
             cookieStore.set('admin_session', 'true', { secure: process.env.NODE_ENV === 'production', httpOnly: true });
             return NextResponse.json({ success: true });
         }
         
-        return NextResponse.json({ error: 'Invalid password' }, { status: 401 });
+        return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
     } catch (err) {
         return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
     }
