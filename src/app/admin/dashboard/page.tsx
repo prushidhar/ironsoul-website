@@ -28,6 +28,12 @@ export default function Dashboard() {
     const [testQuote, setTestQuote] = useState('');
     const [testAuthor, setTestAuthor] = useState('');
 
+    // Video Reviews State
+    const [videos, setVideos] = useState<any[]>([]);
+    const [editVideoId, setEditVideoId] = useState('');
+    const [videoTitle, setVideoTitle] = useState('');
+    const [videoUrl, setVideoUrl] = useState('');
+
     useEffect(() => {
         fetch('/api/auth').then(res => {
             if (!res.ok) router.push('/admin/login');
@@ -39,6 +45,7 @@ export default function Dashboard() {
         fetch('/api/events').then(res => res.json()).then(data => setEvents(Array.isArray(data) ? data : []));
         fetch('/api/statistics').then(res => res.json()).then(data => setStats(Array.isArray(data) ? data : []));
         fetch('/api/testimonials').then(res => res.json()).then(data => setTestimonials(Array.isArray(data) ? data : []));
+        fetch('/api/video-reviews').then(res => res.json()).then(data => setVideos(Array.isArray(data) ? data : []));
     };
 
     const handleDelete = async (endpoint: string, id: string) => {
@@ -127,6 +134,33 @@ export default function Dashboard() {
             cancelTestimonialEdit();
             fetchData();
         } else setStatus('Failed to save testimonial.');
+        setTimeout(() => setStatus(''), 3000);
+    };
+
+    // --- VIDEO REVIEWS HANDLERS ---
+    const handleVideoEdit = (v: any) => {
+        setEditVideoId(v.id); setVideoTitle(v.title); setVideoUrl(v.url);
+    };
+    const cancelVideoEdit = () => {
+        setEditVideoId(''); setVideoTitle(''); setVideoUrl('');
+    };
+    const handleVideoUpload = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!videoTitle || !videoUrl) return alert('Title and URL required!');
+        setStatus(editVideoId ? 'Updating Video...' : 'Saving Video...');
+        
+        const payload = editVideoId ? { id: editVideoId, title: videoTitle, url: videoUrl } : { title: videoTitle, url: videoUrl };
+
+        const res = await fetch('/api/video-reviews', {
+            method: editVideoId ? 'PUT' : 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        if (res.ok) {
+            setStatus('Video Saved!');
+            cancelVideoEdit();
+            fetchData();
+        } else setStatus('Failed to save video.');
         setTimeout(() => setStatus(''), 3000);
     };
 
@@ -245,6 +279,44 @@ export default function Dashboard() {
                                 <div style={{ display: 'flex', gap: '0.5rem' }}>
                                     <button onClick={() => handleTestimonialEdit(test)} style={{ background: '#d4af37', color: '#000', border: 'none', padding: '0.3rem 0.8rem', borderRadius: '5px', cursor: 'pointer', fontSize: '0.8rem' }}>Edit</button>
                                     <button onClick={() => handleDelete('testimonials', test.id)} style={{ background: '#ff4444', color: '#fff', border: 'none', padding: '0.3rem 0.8rem', borderRadius: '5px', cursor: 'pointer', fontSize: '0.8rem' }}>Delete</button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
+            {/* VIDEO REVIEWS SECTION */}
+            <h2 style={{ color: '#d4af37', borderBottom: '1px solid #333', paddingBottom: '0.5rem', marginTop: '5rem' }}>4. Manage Video Reviews</h2>
+            <p style={{ color: '#aaa', marginBottom: '2rem' }}>Paste a YouTube URL to display a video player on the website.</p>
+            <div className="admin-grid">
+                <div className="form-container" style={{ margin: 0, height: 'fit-content' }}>
+                    <form onSubmit={handleVideoUpload}>
+                        <div className="form-group">
+                            <label>Video Title</label>
+                            <input type="text" value={videoTitle} onChange={(e) => setVideoTitle(e.target.value)} required placeholder="e.g. Student Review" />
+                        </div>
+                        <div className="form-group">
+                            <label>YouTube URL</label>
+                            <input type="url" value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} required placeholder="https://www.youtube.com/watch?v=..." />
+                        </div>
+                        <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+                            <button type="submit" className="btn-primary btn-submit" style={{ margin: 0 }}>{editVideoId ? 'Update Video' : 'Add Video'}</button>
+                            {editVideoId && <button type="button" onClick={cancelVideoEdit} className="btn-primary" style={{ margin: 0, background: '#333', color: '#fff' }}>Cancel</button>}
+                        </div>
+                    </form>
+                </div>
+                <div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                        {videos.length === 0 ? <p>No videos added yet.</p> : videos.map(vid => (
+                            <div key={vid.id} style={{ display: 'flex', gap: '1rem', background: 'rgba(255,255,255,0.05)', padding: '1rem', borderRadius: '10px', alignItems: 'center' }}>
+                                <div style={{ flex: 1, overflow: 'hidden' }}>
+                                    <h4 style={{ margin: 0, color: '#d4af37' }}>{vid.title}</h4>
+                                    <p style={{ margin: 0, fontSize: '0.8rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{vid.url}</p>
+                                </div>
+                                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                    <button onClick={() => handleVideoEdit(vid)} style={{ background: '#d4af37', color: '#000', border: 'none', padding: '0.3rem 0.8rem', borderRadius: '5px', cursor: 'pointer', fontSize: '0.8rem' }}>Edit</button>
+                                    <button onClick={() => handleDelete('video-reviews', vid.id)} style={{ background: '#ff4444', color: '#fff', border: 'none', padding: '0.3rem 0.8rem', borderRadius: '5px', cursor: 'pointer', fontSize: '0.8rem' }}>Delete</button>
                                 </div>
                             </div>
                         ))}

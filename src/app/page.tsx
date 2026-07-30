@@ -52,6 +52,7 @@ export default function Home() {
     const [events, setEvents] = useState<any[]>([]);
     const [stats, setStats] = useState<any[]>([]);
     const [testimonials, setTestimonials] = useState<any[]>([]);
+    const [videoReviews, setVideoReviews] = useState<any[]>([]);
     const [navActive, setNavActive] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const [origin, setOrigin] = useState('');
@@ -82,6 +83,13 @@ export default function Home() {
             })
             .catch(console.error);
 
+        fetch('/api/video-reviews')
+            .then(res => res.json())
+            .then(data => {
+                if (Array.isArray(data)) setVideoReviews(data);
+            })
+            .catch(console.error);
+
         // Scroll listener for nav
         const handleScroll = () => {
             if (window.scrollY > 50) setScrolled(true);
@@ -97,6 +105,22 @@ export default function Home() {
 
     const toggleNav = () => setNavActive(!navActive);
     const closeNav = () => setNavActive(false);
+
+    const getYouTubeEmbedUrl = (url: string) => {
+        try {
+            let videoId = '';
+            if (url.includes('youtu.be/')) {
+                videoId = url.split('youtu.be/')[1].split('?')[0];
+            } else if (url.includes('youtube.com/watch')) {
+                videoId = new URL(url).searchParams.get('v') || '';
+            } else if (url.includes('youtube.com/embed/')) {
+                return url;
+            }
+            return videoId ? `https://www.youtube.com/embed/${videoId}` : url;
+        } catch {
+            return url;
+        }
+    };
 
     return (
         <main style={{ overflow: 'hidden' }}>
@@ -353,6 +377,35 @@ export default function Home() {
                     </motion.div>
                 </div>
             </section>
+
+            {/* Video Reviews Section */}
+            {videoReviews.length > 0 && (
+                <section className="section">
+                    <div className="container">
+                        <motion.h2 className="section-title" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>Video Testimonials</motion.h2>
+                        <motion.div className="gallery-grid" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={staggerContainer}>
+                            {videoReviews.map((video: any) => {
+                                const embedUrl = getYouTubeEmbedUrl(video.url);
+                                return (
+                                    <motion.div key={video.id} className="video-card" variants={fadeUp} style={{ background: 'var(--card-bg)', borderRadius: '15px', overflow: 'hidden', border: '1px solid var(--card-border)', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>
+                                        <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0 }}>
+                                            <iframe 
+                                                src={embedUrl} 
+                                                style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 0 }} 
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                                allowFullScreen
+                                            />
+                                        </div>
+                                        <div style={{ padding: '1.5rem' }}>
+                                            <h3 style={{ color: 'var(--accent-gold)', margin: 0, fontSize: '1.2rem' }}>{video.title}</h3>
+                                        </div>
+                                    </motion.div>
+                                );
+                            })}
+                        </motion.div>
+                    </div>
+                </section>
+            )}
 
             {/* Thank You Section */}
             <section className="section bg-alt" style={{ padding: '4rem 0' }}>
