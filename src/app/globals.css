@@ -729,3 +729,17 @@ footer {
     90% { opacity: 0.6; }
     100% { transform: translateY(-100px) scale(1.5); opacity: 0; }
 }
+
+/* Admin Dashboard Responsiveness */
+.admin-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    margin-top: 2rem;
+}
+
+@media (max-width: 900px) {
+    .admin-grid {
+        grid-template-columns: 1fr;
+    }
+}

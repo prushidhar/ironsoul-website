@@ -137,7 +137,7 @@ export default function Dashboard() {
 
             {/* EVENTS SECTION */}
             <h2 style={{ color: '#d4af37', borderBottom: '1px solid #333', paddingBottom: '0.5rem', marginTop: '3rem' }}>1. Manage Gallery Events</h2>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3rem', marginTop: '2rem' }}>
+            <div className="admin-grid">
                 <div className="form-container" style={{ margin: 0, height: 'fit-content' }}>
                     <form onSubmit={handleEventUpload}>
                         <div className="form-group">
@@ -179,7 +179,7 @@ export default function Dashboard() {
             {/* STATISTICS SECTION */}
             <h2 style={{ color: '#d4af37', borderBottom: '1px solid #333', paddingBottom: '0.5rem', marginTop: '5rem' }}>2. Manage Impact Statistics</h2>
             <p style={{ color: '#aaa', marginBottom: '2rem' }}>If you add at least one statistic, the Impact section will automatically appear on the website.</p>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3rem' }}>
+            <div className="admin-grid">
                 <div className="form-container" style={{ margin: 0, height: 'fit-content' }}>
                     <form onSubmit={handleStatUpload}>
                         <div className="form-group">
@@ -217,7 +217,7 @@ export default function Dashboard() {
             {/* TESTIMONIALS SECTION */}
             <h2 style={{ color: '#d4af37', borderBottom: '1px solid #333', paddingBottom: '0.5rem', marginTop: '5rem' }}>3. Manage Testimonials</h2>
             <p style={{ color: '#aaa', marginBottom: '2rem' }}>If you add at least one testimonial, the scrolling Marquee will automatically appear on the website.</p>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3rem' }}>
+            <div className="admin-grid">
                 <div className="form-container" style={{ margin: 0, height: 'fit-content' }}>
                     <form onSubmit={handleTestimonialUpload}>
                         <div className="form-group">

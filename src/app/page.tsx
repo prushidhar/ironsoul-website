@@ -54,6 +54,7 @@ export default function Home() {
     const [testimonials, setTestimonials] = useState<any[]>([]);
     const [navActive, setNavActive] = useState(false);
     const [scrolled, setScrolled] = useState(false);
+    const [origin, setOrigin] = useState('');
     
     // Parallax background for hero
     const { scrollY } = useScroll();
@@ -89,6 +90,7 @@ export default function Home() {
 
         window.addEventListener('scroll', handleScroll);
         handleScroll();
+        setOrigin(window.location.origin);
 
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
@@ -376,7 +378,7 @@ export default function Home() {
                     <motion.div className="form-container" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} style={{ boxShadow: '0 20px 50px rgba(212, 175, 55, 0.05)' }}>
                         <form action="https://formsubmit.co/ironsoul2026@gmail.com" method="POST" className="membership-form">
                             <input type="hidden" name="_captcha" value="false" />
-                            <input type="hidden" name="_next" value="http://localhost:3000/#join" />
+                            {origin && <input type="hidden" name="_next" value={`${origin}/#join`} />}
                             <input type="hidden" name="_subject" value="New IronSoul Application!" />
                             
                             <div className="form-group">
