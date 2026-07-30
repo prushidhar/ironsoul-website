@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { useEffect, useState, useRef } from "react";
+import { motion, useScroll, useTransform, useInView, animate } from "framer-motion";
 import Tilt from "react-parallax-tilt";
 
 const fadeUp: any = {
@@ -25,6 +25,27 @@ const staggerContainer: any = {
         opacity: 1,
         transition: { staggerChildren: 0.2 }
     }
+};
+
+const Counter = ({ to, suffix = "" }: { to: number, suffix?: string }) => {
+    const ref = useRef(null);
+    const inView = useInView(ref, { once: true, margin: "-100px" });
+    const [count, setCount] = useState(0);
+
+    useEffect(() => {
+        if (inView) {
+            const controls = animate(0, to, {
+                duration: 2.5,
+                ease: "easeOut",
+                onUpdate(value) {
+                    setCount(Math.floor(value));
+                }
+            });
+            return () => controls.stop();
+        }
+    }, [inView, to]);
+
+    return <span ref={ref}>{count.toLocaleString()}{suffix}</span>;
 };
 
 export default function Home() {
@@ -93,6 +114,17 @@ export default function Home() {
                         y: yHero
                     }} 
                 />
+
+                {/* Ambient Particles */}
+                <div className="particles">
+                    {[...Array(20)].map((_, i) => (
+                        <div key={i} className="particle" style={{
+                            left: `${Math.random() * 100}%`,
+                            animationDuration: `${15 + Math.random() * 15}s`,
+                            animationDelay: `${Math.random() * 10}s`
+                        }}></div>
+                    ))}
+                </div>
                 
                 {/* Floating glowing orbs for ultra-premium feel */}
                 <motion.div
@@ -115,6 +147,50 @@ export default function Home() {
                     <motion.p className="hero-subtitle" variants={fadeUp}>Empowering young minds to show their courage in speaking and leadership.</motion.p>
                     <motion.a href="#about" className="btn-primary btn-large" variants={fadeUp} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>Discover Our Mission</motion.a>
                 </motion.div>
+            </section>
+
+            {/* Impact Counter Section */}
+            <section className="impact-section">
+                <div className="container impact-grid">
+                    <motion.div className="impact-item" initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
+                        <h3><Counter to={10000} suffix="+" /></h3>
+                        <p>Students Empowered</p>
+                    </motion.div>
+                    <motion.div className="impact-item" initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.2 }}>
+                        <h3><Counter to={50} suffix="+" /></h3>
+                        <p>Workshops Conducted</p>
+                    </motion.div>
+                    <motion.div className="impact-item" initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.4 }}>
+                        <h3><Counter to={20} suffix="+" /></h3>
+                        <p>Partner Institutions</p>
+                    </motion.div>
+                </div>
+            </section>
+
+            {/* Testimonials Marquee */}
+            <section className="marquee-container">
+                <div className="marquee-content">
+                    {[1, 2].map((group) => (
+                        <div key={group} style={{ display: 'flex', gap: '3rem' }}>
+                            <div className="marquee-card">
+                                <p>"IronSoul completely transformed how our students approach public speaking. The confidence they gained in just one workshop was phenomenal."</p>
+                                <h4>- Principal, Public School</h4>
+                            </div>
+                            <div className="marquee-card">
+                                <p>"The JAM sessions were incredibly fun and engaging. I used to have terrible stage fright, but now I love speaking in front of crowds!"</p>
+                                <h4>- Rahul S., College Student</h4>
+                            </div>
+                            <div className="marquee-card">
+                                <p>"Oggu Bhanu Sasitha's motivational seminar left our entire auditorium inspired. Her story is a testament to resilience and hard work."</p>
+                                <h4>- HOD of Management, XYZ University</h4>
+                            </div>
+                            <div className="marquee-card">
+                                <p>"A fantastic initiative! The leadership training provided by IronSoul is exactly what today's youth needs to succeed in the real world."</p>
+                                <h4>- Anita R., High School Teacher</h4>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </section>
 
             {/* About Section */}
@@ -356,6 +432,11 @@ export default function Home() {
                     </div>
                 </div>
             </footer>
+
+            {/* Floating Quick Contact */}
+            <a href="mailto:ironsoul2026@gmail.com" className="floating-btn" title="Email Us">
+                ✉️
+            </a>
         </main>
     );
 }
