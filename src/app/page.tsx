@@ -256,7 +256,7 @@ export default function Home() {
                             events.map((event: any) => (
                                 <Tilt key={event.id} tiltMaxAngleX={3} tiltMaxAngleY={3} scale={1.02}>
                                     <motion.div className="gallery-item" variants={fadeUp} style={{ boxShadow: '0 15px 35px rgba(0,0,0,0.5)' }}>
-                                        <img src={event.imagePath} alt={event.title} />
+                                        <img src={event.imagePath} alt={event.title} loading="lazy" />
                                         <div className="gallery-overlay">
                                             <div>
                                                 <span>{event.title}</span>
@@ -281,7 +281,7 @@ export default function Home() {
                     {/* Founder Spotlight */}
                     <div style={{ overflow: 'hidden', padding: '10px 0' }}>
                         <motion.div className="founder-spotlight" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}>
-                            <motion.img src="/assets/bhanu.jpg" alt="Oggu Bhanu sasitha" className="founder-spotlight-photo" onError={(e: any) => e.target.src='/assets/avatar.jpg'} variants={slideInLeft} />
+                            <motion.img src="/assets/bhanu.jpg" alt="Oggu Bhanu sasitha" loading="lazy" className="founder-spotlight-photo" onError={(e: any) => e.target.src='/assets/avatar.jpg'} variants={slideInLeft} />
                             <motion.div className="founder-spotlight-content" variants={slideInRight}>
                                 <h3>Oggu Bhanu Sasitha</h3>
                                 <h4>Founder, Public Speaker & Motivator</h4>
@@ -294,7 +294,7 @@ export default function Home() {
 
                         <Tilt tiltMaxAngleX={10} tiltMaxAngleY={10} scale={1.05}>
                             <motion.div className="team-card" variants={fadeUp}>
-                                <img src="/assets/thushitha.jpg" alt="Kalavapalli Thushitha Reddy" className="team-photo" onError={(e: any) => e.target.src='/assets/avatar.jpg'} />
+                                <img src="/assets/thushitha.jpg" alt="Kalavapalli Thushitha Reddy" loading="lazy" className="team-photo" onError={(e: any) => e.target.src='/assets/avatar.jpg'} />
                                 <h3>Kalavapalli Thushitha Reddy</h3>
                                 <p className="team-role">President</p>
                             </motion.div>
@@ -302,7 +302,7 @@ export default function Home() {
 
                         <Tilt tiltMaxAngleX={10} tiltMaxAngleY={10} scale={1.05}>
                             <motion.div className="team-card" variants={fadeUp}>
-                                <img src="/assets/santhosh.jpg" alt="Koduri Santhosh" className="team-photo" onError={(e: any) => e.target.src='/assets/avatar.jpg'} />
+                                <img src="/assets/santhosh.jpg" alt="Koduri Santhosh" loading="lazy" className="team-photo" onError={(e: any) => e.target.src='/assets/avatar.jpg'} />
                                 <h3>Koduri Santhosh</h3>
                                 <p className="team-role">Event Coordinator</p>
                             </motion.div>
@@ -310,7 +310,7 @@ export default function Home() {
 
                         <Tilt tiltMaxAngleX={10} tiltMaxAngleY={10} scale={1.05}>
                             <motion.div className="team-card" variants={fadeUp}>
-                                <img src="/assets/kaveri.jpg" alt="Andugula Kaveri" className="team-photo" onError={(e: any) => e.target.src='/assets/avatar.jpg'} />
+                                <img src="/assets/kaveri.jpg" alt="Andugula Kaveri" loading="lazy" className="team-photo" onError={(e: any) => e.target.src='/assets/avatar.jpg'} />
                                 <h3>Andugula Kaveri</h3>
                                 <p className="team-role">Chief Financial Officer (CFO)</p>
                             </motion.div>
@@ -318,7 +318,7 @@ export default function Home() {
 
                         <Tilt tiltMaxAngleX={10} tiltMaxAngleY={10} scale={1.05}>
                             <motion.div className="team-card" variants={fadeUp}>
-                                <img src="/assets/likhitha.jpg" alt="Patchava Likhitha" className="team-photo" onError={(e: any) => e.target.src='/assets/avatar.jpg'} />
+                                <img src="/assets/likhitha.jpg" alt="Patchava Likhitha" loading="lazy" className="team-photo" onError={(e: any) => e.target.src='/assets/avatar.jpg'} />
                                 <h3>Patchava Likhitha</h3>
                                 <p className="team-role">HR Manager</p>
                             </motion.div>
@@ -326,7 +326,7 @@ export default function Home() {
 
                         <Tilt tiltMaxAngleX={10} tiltMaxAngleY={10} scale={1.05}>
                             <motion.div className="team-card" variants={fadeUp}>
-                                <img src="/assets/joshna.jpg" alt="Renangi Joshna" className="team-photo" onError={(e: any) => e.target.src='/assets/avatar.jpg'} />
+                                <img src="/assets/joshna.jpg" alt="Renangi Joshna" loading="lazy" className="team-photo" onError={(e: any) => e.target.src='/assets/avatar.jpg'} />
                                 <h3>Renangi Joshna</h3>
                                 <p className="team-role">Development Head</p>
                             </motion.div>
