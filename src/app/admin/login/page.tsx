@@ -30,13 +30,13 @@ export default function Login() {
                 <h2 className="section-title" style={{ fontSize: '2rem' }}>Admin Login</h2>
                 <form onSubmit={handleLogin}>
                     <div className="form-group">
-                        <label>Login ID (Username or Email)</label>
+                        <label>Login ID</label>
                         <input 
                             type="text" 
                             value={username} 
                             onChange={(e) => setUsername(e.target.value)} 
                             required 
-                            placeholder="e.g., ironsoul2026@gmail.com"
+                            placeholder="Enter your Login ID..."
                         />
                     </div>
                     <div className="form-group">
