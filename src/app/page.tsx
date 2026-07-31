@@ -385,16 +385,26 @@ export default function Home() {
                         <motion.h2 className="section-title" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>Video Testimonials</motion.h2>
                         <motion.div className="gallery-grid" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={staggerContainer}>
                             {videoReviews.map((video: any) => {
+                                const isNativeVideo = video.url.includes('supabase.co/storage/v1/object/public/videos/');
                                 const embedUrl = getYouTubeEmbedUrl(video.url);
                                 return (
                                     <motion.div key={video.id} className="video-card" variants={fadeUp} style={{ background: 'var(--card-bg)', borderRadius: '15px', overflow: 'hidden', border: '1px solid var(--card-border)', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>
-                                        <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0 }}>
-                                            <iframe 
-                                                src={embedUrl} 
-                                                style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 0 }} 
-                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                                allowFullScreen
-                                            />
+                                        <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, background: '#000' }}>
+                                            {isNativeVideo ? (
+                                                <video 
+                                                    src={video.url} 
+                                                    controls
+                                                    preload="metadata"
+                                                    style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'contain' }} 
+                                                />
+                                            ) : (
+                                                <iframe 
+                                                    src={embedUrl} 
+                                                    style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 0 }} 
+                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                                    allowFullScreen
+                                                />
+                                            )}
                                         </div>
                                         <div style={{ padding: '1.5rem' }}>
                                             <h3 style={{ color: 'var(--accent-gold)', margin: 0, fontSize: '1.2rem' }}>{video.title}</h3>

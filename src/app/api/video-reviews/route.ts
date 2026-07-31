@@ -18,20 +18,41 @@ export async function GET() {
 
 export async function POST(request: Request) {
     try {
-        const body = await request.json();
-        const { title, url } = body;
+        const formData = await request.formData();
+        const title = formData.get('title') as string;
+        const urlInput = formData.get('url') as string;
+        const file = formData.get('videoFile') as File | null;
 
-        if (!title || !url) {
-            return NextResponse.json({ error: 'Title and URL are required' }, { status: 400 });
+        if (!title || (!urlInput && !file)) {
+            return NextResponse.json({ error: 'Title and either a URL or Video File are required' }, { status: 400 });
         }
 
-        const { data, error } = await supabase
+        let finalUrl = urlInput;
+
+        if (file && file.size > 0) {
+            const buffer = Buffer.from(await file.arrayBuffer());
+            const filename = `${Date.now()}-${file.name.replace(/\s+/g, '_')}`;
+            
+            const { error: uploadError } = await supabase.storage
+                .from('videos')
+                .upload(filename, buffer, { contentType: file.type });
+                
+            if (uploadError) throw uploadError;
+            
+            const { data: publicUrlData } = supabase.storage
+                .from('videos')
+                .getPublicUrl(filename);
+                
+            finalUrl = publicUrlData.publicUrl;
+        }
+
+        const { data: insertData, error: insertError } = await supabase
             .from('video_reviews')
-            .insert([{ title, url }])
+            .insert([{ title, url: finalUrl }])
             .select();
             
-        if (error) throw error;
-        return NextResponse.json(data[0], { status: 201 });
+        if (insertError) throw insertError;
+        return NextResponse.json(insertData[0], { status: 201 });
     } catch (err) {
         console.error(err);
         return NextResponse.json({ error: 'Failed to save video review' }, { status: 500 });
@@ -40,16 +61,40 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
     try {
-        const body = await request.json();
-        const { id, title, url } = body;
+        const formData = await request.formData();
+        const id = formData.get('id') as string;
+        const title = formData.get('title') as string;
+        const urlInput = formData.get('url') as string;
+        const file = formData.get('videoFile') as File | null;
 
-        if (!id || !title || !url) {
-            return NextResponse.json({ error: 'ID, title, and URL are required' }, { status: 400 });
+        if (!id || !title) {
+            return NextResponse.json({ error: 'ID and title are required' }, { status: 400 });
+        }
+
+        let updatePayload: any = { title };
+
+        if (file && file.size > 0) {
+            const buffer = Buffer.from(await file.arrayBuffer());
+            const filename = `${Date.now()}-${file.name.replace(/\s+/g, '_')}`;
+            
+            const { error: uploadError } = await supabase.storage
+                .from('videos')
+                .upload(filename, buffer, { contentType: file.type });
+                
+            if (uploadError) throw uploadError;
+            
+            const { data: publicUrlData } = supabase.storage
+                .from('videos')
+                .getPublicUrl(filename);
+                
+            updatePayload.url = publicUrlData.publicUrl;
+        } else if (urlInput) {
+            updatePayload.url = urlInput;
         }
 
         const { data, error } = await supabase
             .from('video_reviews')
-            .update({ title, url })
+            .update(updatePayload)
             .eq('id', id)
             .select();
             

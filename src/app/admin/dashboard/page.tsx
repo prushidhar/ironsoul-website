@@ -33,6 +33,7 @@ export default function Dashboard() {
     const [editVideoId, setEditVideoId] = useState('');
     const [videoTitle, setVideoTitle] = useState('');
     const [videoUrl, setVideoUrl] = useState('');
+    const [videoFile, setVideoFile] = useState<File | null>(null);
 
     useEffect(() => {
         fetch('/api/auth').then(res => {
@@ -139,23 +140,29 @@ export default function Dashboard() {
 
     // --- VIDEO REVIEWS HANDLERS ---
     const handleVideoEdit = (v: any) => {
-        setEditVideoId(v.id); setVideoTitle(v.title); setVideoUrl(v.url);
+        setEditVideoId(v.id); setVideoTitle(v.title); setVideoUrl(v.url); setVideoFile(null);
     };
     const cancelVideoEdit = () => {
-        setEditVideoId(''); setVideoTitle(''); setVideoUrl('');
+        setEditVideoId(''); setVideoTitle(''); setVideoUrl(''); setVideoFile(null);
     };
     const handleVideoUpload = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!videoTitle || !videoUrl) return alert('Title and URL required!');
+        if (!videoTitle || (!videoUrl && !videoFile && !editVideoId)) {
+            return alert('Title and either a URL or Video File are required!');
+        }
         setStatus(editVideoId ? 'Updating Video...' : 'Saving Video...');
         
-        const payload = editVideoId ? { id: editVideoId, title: videoTitle, url: videoUrl } : { title: videoTitle, url: videoUrl };
+        const formData = new FormData();
+        if (editVideoId) formData.append('id', editVideoId);
+        formData.append('title', videoTitle);
+        if (videoUrl) formData.append('url', videoUrl);
+        if (videoFile) formData.append('videoFile', videoFile);
 
         const res = await fetch('/api/video-reviews', {
             method: editVideoId ? 'PUT' : 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
+            body: formData
         });
+        
         if (res.ok) {
             setStatus('Video Saved!');
             cancelVideoEdit();
@@ -297,8 +304,13 @@ export default function Dashboard() {
                             <input type="text" value={videoTitle} onChange={(e) => setVideoTitle(e.target.value)} required placeholder="e.g. Student Review" />
                         </div>
                         <div className="form-group">
-                            <label>YouTube URL</label>
-                            <input type="url" value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} required placeholder="https://www.youtube.com/watch?v=..." />
+                            <label>Option A: YouTube URL</label>
+                            <input type="url" value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} placeholder="https://www.youtube.com/watch?v=..." />
+                        </div>
+                        <p style={{ textAlign: 'center', margin: '0.5rem 0', color: '#666' }}>— OR —</p>
+                        <div className="form-group">
+                            <label>Option B: Upload Video File (.mp4)</label>
+                            <input type="file" accept="video/*" onChange={(e) => setVideoFile(e.target.files?.[0] || null)} />
                         </div>
                         <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
                             <button type="submit" className="btn-primary btn-submit" style={{ margin: 0 }}>{editVideoId ? 'Update Video' : 'Add Video'}</button>
