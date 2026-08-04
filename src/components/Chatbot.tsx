@@ -3,12 +3,15 @@
 import { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useChat } from '@ai-sdk/react';
 
 export function Chatbot() {
     const [isOpen, setIsOpen] = useState(false);
-    const [messages, setMessages] = useState<any[]>([]);
-    const [input, setInput] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
+    const { messages, input, handleInputChange, handleSubmit, isLoading, error } = useChat({
+        api: '/api/chat',
+        onError: (e) => console.error("Chat Error:", e)
+    });
+    
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     const scrollToBottom = () => {
@@ -18,49 +21,6 @@ export function Chatbot() {
     useEffect(() => {
         scrollToBottom();
     }, [messages]);
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!input.trim() || isLoading) return;
-
-        const userMsg = { id: Date.now().toString(), role: 'user', content: input };
-        const newMessages = [...messages, userMsg];
-        setMessages(newMessages);
-        setInput('');
-        setIsLoading(true);
-
-        try {
-            const res = await fetch('/api/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ messages: newMessages })
-            });
-
-            if (!res.ok) throw new Error("Failed to fetch response");
-            if (!res.body) throw new Error("No response body");
-
-            const reader = res.body.getReader();
-            const decoder = new TextDecoder();
-            const assistantMsgId = (Date.now() + 1).toString();
-            
-            setMessages(prev => [...prev, { id: assistantMsgId, role: 'assistant', content: '' }]);
-
-            while (true) {
-                const { done, value } = await reader.read();
-                if (done) break;
-                
-                const text = decoder.decode(value, { stream: true });
-                setMessages(prev => prev.map(msg => 
-                    msg.id === assistantMsgId ? { ...msg, content: msg.content + text } : msg
-                ));
-            }
-        } catch (error) {
-            console.error(error);
-            setMessages(prev => [...prev, { id: Date.now().toString(), role: 'assistant', content: 'Sorry, I encountered an error. Please try again.' }]);
-        } finally {
-            setIsLoading(false);
-        }
-    };
 
     return (
         <div style={{ position: 'fixed', bottom: '2rem', right: '2rem', zIndex: 9999 }}>
@@ -125,6 +85,11 @@ export function Chatbot() {
                                     Thinking...
                                 </div>
                             )}
+                            {error && (
+                                <div style={{ alignSelf: 'flex-start', background: 'var(--bg-main)', border: '1px solid var(--card-border)', padding: '0.8rem 1rem', borderRadius: '15px', borderBottomLeftRadius: '2px', color: '#ff4444', fontSize: '0.95rem' }}>
+                                    Sorry, I encountered an error. Please try again.
+                                </div>
+                            )}
                             <div ref={messagesEndRef} />
                         </div>
 
@@ -132,7 +97,7 @@ export function Chatbot() {
                         <form onSubmit={handleSubmit} style={{ padding: '1rem', borderTop: '1px solid var(--card-border)', display: 'flex', gap: '0.5rem', background: 'var(--bg-main)' }}>
                             <input 
                                 value={input} 
-                                onChange={(e) => setInput(e.target.value)} 
+                                onChange={handleInputChange} 
                                 placeholder="Type your message..." 
                                 style={{ flex: 1, padding: '0.8rem', borderRadius: '8px', border: '1px solid var(--card-border)', background: 'transparent', color: 'var(--text-main)', outline: 'none' }}
                             />
