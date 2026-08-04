@@ -5,6 +5,7 @@ import { Chatbot } from "@/components/Chatbot";
 import { CustomCursor } from "@/components/CustomCursor";
 import { ScrollProgress } from "@/components/ScrollProgress";
 import { PageLoader } from "@/components/PageLoader";
+import { SmoothScroll } from "@/components/SmoothScroll";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -45,8 +46,11 @@ export default function RootLayout({
         <ThemeProvider attribute="data-theme" defaultTheme="dark" enableSystem={false} disableTransitionOnChange={false}>
           <PageLoader />
           <div className="mesh-bg" />
+          <div className="noise-overlay" />
           <ScrollProgress />
-          {children}
+          <SmoothScroll>
+            {children}
+          </SmoothScroll>
           <Chatbot />
           <CustomCursor />
         </ThemeProvider>

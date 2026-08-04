@@ -296,7 +296,7 @@ export default function Home() {
                     <motion.div className="gallery-grid" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={staggerContainer}>
                         {events.length > 0 ? (
                             events.map((event: any) => (
-                                <Tilt key={event.id} tiltMaxAngleX={3} tiltMaxAngleY={3} scale={1.02}>
+                                <Tilt key={event.id} tiltMaxAngleX={3} tiltMaxAngleY={3} scale={1.02} glareEnable={true} glareMaxOpacity={0.15} glareColor="#F59E0B" glarePosition="all">
                                     <motion.div className="gallery-item glass" variants={fadeUp} style={{ boxShadow: '0 15px 35px rgba(0,0,0,0.5)' }}>
                                         <img src={event.imagePath} alt={event.title} loading="lazy" />
                                         <div className="gallery-overlay">
@@ -335,7 +335,7 @@ export default function Home() {
 
                     <motion.div className="team-grid" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={staggerContainer}>
 
-                        <Tilt tiltMaxAngleX={10} tiltMaxAngleY={10} scale={1.05}>
+                        <Tilt tiltMaxAngleX={10} tiltMaxAngleY={10} scale={1.05} glareEnable={true} glareMaxOpacity={0.15} glareColor="#F59E0B" glarePosition="all">
                             <motion.div className="team-card" variants={fadeUp}>
                                 <img src="/assets/thushitha.jpg" alt="Kalavapalli Thushitha Reddy" loading="lazy" className="team-photo" onError={(e: any) => e.target.src='/assets/avatar.jpg'} />
                                 <h3>Kalavapalli Thushitha Reddy</h3>
@@ -387,8 +387,8 @@ export default function Home() {
                     
                     <LiquidScroll>
                     <motion.div className="programs-grid" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={staggerContainer}>
-                        <Tilt tiltMaxAngleX={5} tiltMaxAngleY={5} scale={1.02}>
-                            <motion.div className="program-card" variants={fadeUp} style={{ height: '100%', boxShadow: '0 10px 40px rgba(0,0,0,0.6)' }}>
+                        <Tilt tiltMaxAngleX={5} tiltMaxAngleY={5} scale={1.02} glareEnable={true} glareMaxOpacity={0.15} glareColor="#F59E0B" glarePosition="all">
+                            <motion.div className="program-card glass" variants={fadeUp} style={{ height: '100%', boxShadow: '0 10px 40px rgba(0,0,0,0.6)' }}>
                                 <div className="program-icon">🏫</div>
                                 <h3>Plan for Schools</h3>
                                 <div className="program-list" style={{ textAlign: 'left', margin: '1rem 0' }}>
@@ -403,8 +403,8 @@ export default function Home() {
                             </motion.div>
                         </Tilt>
 
-                        <Tilt tiltMaxAngleX={5} tiltMaxAngleY={5} scale={1.02}>
-                            <motion.div className="program-card" variants={fadeUp} style={{ height: '100%', boxShadow: '0 10px 40px rgba(0,0,0,0.6)' }}>
+                        <Tilt tiltMaxAngleX={5} tiltMaxAngleY={5} scale={1.02} glareEnable={true} glareMaxOpacity={0.15} glareColor="#F59E0B" glarePosition="all">
+                            <motion.div className="program-card glass" variants={fadeUp} style={{ height: '100%', boxShadow: '0 10px 40px rgba(0,0,0,0.6)' }}>
                                 <div className="program-icon">🎓</div>
                                 <h3>Plan for Colleges</h3>
                                 <div className="program-list" style={{ textAlign: 'left', margin: '1rem 0' }}>
