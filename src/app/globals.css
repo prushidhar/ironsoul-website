@@ -229,14 +229,40 @@ a {
 
 /* Hero Section */
 .hero {
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    text-align: center;
-    background-size: cover;
-    background-position: center;
     position: relative;
+    padding-top: 80px;
+    overflow: hidden;
+}
+
+.hero-aurora {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    overflow: hidden;
+    z-index: 0;
+}
+.hero-aurora::before, .hero-aurora::after {
+    content: '';
+    position: absolute;
+    width: 200%; height: 200%;
+    top: -50%; left: -50%;
+    background: conic-gradient(from 0deg, transparent 0%, rgba(217, 119, 6, 0.15) 25%, transparent 50%, rgba(217, 119, 6, 0.05) 75%, transparent 100%);
+    animation: rotate 20s linear infinite;
+    filter: blur(80px);
+}
+.hero-aurora::after {
+    background: conic-gradient(from 180deg, transparent 0%, rgba(255, 255, 255, 0.05) 25%, transparent 50%, rgba(255, 255, 255, 0.02) 75%, transparent 100%);
+    animation: rotate 15s linear infinite reverse;
+}
+@keyframes rotate {
+    100% { transform: rotate(360deg); }
+}
+
+[data-theme='light'] .hero-aurora::after {
+    background: conic-gradient(from 180deg, transparent 0%, rgba(0, 0, 0, 0.05) 25%, transparent 50%, rgba(0, 0, 0, 0.02) 75%, transparent 100%);
 }
 
 .hero-content {
@@ -599,21 +625,52 @@ footer {
     }
     
     .nav-links {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        background: rgba(10, 10, 12, 0.98);
+        display: none;
+    }
+    
+    .nav-links.active {
+        display: flex;
+        position: fixed;
+        top: 0; left: 0; width: 100vw; height: 100vh;
+        background: rgba(10, 10, 12, 0.95);
+        backdrop-filter: blur(25px);
         flex-direction: column;
-        padding: 2rem 0;
-        gap: 1.5rem;
-        border-bottom: 1px solid var(--card-border);
-        clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
-        transition: clip-path 0.3s ease;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        gap: 2.5rem;
+    }
+    
+    [data-theme='light'] .nav-links.active {
+        background: rgba(255, 255, 255, 0.95);
+    }
+    
+    .nav-links.active li {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: slideUp 0.5s forwards ease-out;
+    }
+    .nav-links.active li:nth-child(1) { animation-delay: 0.1s; }
+    .nav-links.active li:nth-child(2) { animation-delay: 0.15s; }
+    .nav-links.active li:nth-child(3) { animation-delay: 0.2s; }
+    .nav-links.active li:nth-child(4) { animation-delay: 0.25s; }
+    .nav-links.active li:nth-child(5) { animation-delay: 0.3s; }
+    .nav-links.active li:nth-child(6) { animation-delay: 0.35s; }
+    .nav-links.active li:nth-child(7) { animation-delay: 0.4s; }
+    .nav-links.active li:nth-child(8) { animation-delay: 0.45s; }
+    
+    @keyframes slideUp {
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .nav-links.active a {
+        font-size: 2.5rem !important;
+        font-weight: 700;
     }
 
-    .nav-links.active {
-        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    .mobile-menu-btn {
+        display: block;
+        z-index: 1001;
     }
     
     .hero-title {
@@ -888,4 +945,19 @@ footer {
 ::selection {
     background-color: var(--accent-gold);
     color: #000;
+}
+
+/* Custom Liquid Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-main); 
+}
+::-webkit-scrollbar-thumb {
+    background: var(--accent-gold); 
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #b45309; 
 }

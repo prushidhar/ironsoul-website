@@ -8,6 +8,7 @@ import Tilt from "react-parallax-tilt";
 import { TextReveal } from "@/components/TextReveal";
 import { Magnetic } from "@/components/Magnetic";
 import { LiquidScroll } from "@/components/LiquidScroll";
+import { VelocityMarquee } from "@/components/VelocityMarquee";
 
 const fadeUp: any = {
     hidden: { opacity: 0, y: 50 },
@@ -206,13 +207,16 @@ export default function Home() {
 
             {/* Hero Section */}
             <section id="home" className="hero" style={{ position: 'relative', overflow: 'hidden' }}>
+                <div className="hero-aurora" />
                 <motion.div 
                     style={{ 
                         position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', 
                         backgroundImage: "linear-gradient(rgba(10, 10, 12, 0.7), rgba(10, 10, 12, 0.9)), url('/assets/hero.jpg')",
                         backgroundSize: 'cover', backgroundPosition: 'center',
                         y: heroY,
-                        scale: heroScale
+                        scale: heroScale,
+                        zIndex: 1,
+                        mixBlendMode: 'overlay'
                     }} 
                 />
 
@@ -528,6 +532,25 @@ export default function Home() {
                         <p style={{ color: '#d4af37', fontWeight: 'bold', fontSize: '1.3rem' }}>Strength in Soul, Power in Action.</p>
                         <p>- Iron soul Organisation</p>
                     </motion.div>
+                </div>
+            </section>
+
+            <section className="marquee-section">
+                <div className="marquee-container">
+                    <VelocityMarquee baseVelocity={3}>
+                        <div className="marquee-card glass">
+                            <p>"A leader is one who knows the way, goes the way, and shows the way."</p>
+                            <span>- John C. Maxwell</span>
+                        </div>
+                        <div className="marquee-card glass">
+                            <p>"There are only two types of speakers in the world. 1. The nervous and 2. Liars."</p>
+                            <span>- Mark Twain</span>
+                        </div>
+                        <div className="marquee-card glass">
+                            <p>"Courage is what it takes to stand up and speak; courage is also what it takes to sit down and listen."</p>
+                            <span>- Winston Churchill</span>
+                        </div>
+                    </VelocityMarquee>
                 </div>
             </section>
 
