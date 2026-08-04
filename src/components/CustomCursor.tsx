@@ -16,6 +16,17 @@ export function CustomCursor() {
 
         const updateMousePosition = (e: MouseEvent) => {
             setMousePosition({ x: e.clientX, y: e.clientY });
+            
+            // Spotlight tracking
+            const cards = document.querySelectorAll('.glass, .about-card, .founder-spotlight, .team-card, .program-card, .marquee-card, .video-card');
+            for (let i = 0; i < cards.length; i++) {
+                const card = cards[i] as HTMLElement;
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            }
         };
 
         const handleMouseOver = (e: MouseEvent) => {

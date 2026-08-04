@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform, useInView, animate } from "framer-moti
 import { useTheme } from "next-themes";
 import { Sun, Moon } from "lucide-react";
 import Tilt from "react-parallax-tilt";
+import { TextReveal } from "@/components/TextReveal";
 
 const fadeUp: any = {
     hidden: { opacity: 0, y: 50 },
@@ -218,8 +219,8 @@ export default function Home() {
                     initial="hidden" animate="visible" variants={staggerContainer}
                     style={{ zIndex: 2, opacity: heroOpacity }}
                 >
-                    <motion.h1 className="hero-title" variants={fadeUp}>Strength in Soul,<br/><span className="highlight">Power in Action.</span></motion.h1>
-                    <motion.p className="hero-subtitle" variants={fadeUp}>Empowering young minds to show their courage in speaking and leadership.</motion.p>
+                    <TextReveal text="Strength in Soul, Power in Action." className="hero-title highlight" />
+                    <motion.p className="hero-subtitle" variants={fadeUp} style={{ marginTop: '1.5rem' }}>Empowering young minds to show their courage in speaking and leadership.</motion.p>
                     <motion.a href="#about" className="btn-primary btn-large" variants={fadeUp} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>Discover Our Mission</motion.a>
                 </motion.div>
                 <div className="hero-scroll" onClick={() => window.location.href = '#about'} style={{ position: 'absolute', bottom: '30px', left: '50%', cursor: 'pointer', zIndex: 3 }}>
