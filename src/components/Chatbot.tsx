@@ -141,7 +141,7 @@ export function Chatbot() {
                                 <div style={{ alignSelf: 'flex-start', background: 'var(--bg-main)', border: '1px solid var(--card-border)', padding: '0.8rem 1rem', borderRadius: '15px', borderBottomLeftRadius: '2px', color: 'var(--text-main)', opacity: 0.7, fontSize: '0.95rem' }}>
                                     Thinking...
                                 </div>
-
+                            )}
                             <div ref={messagesEndRef} />
                         </div>
 
