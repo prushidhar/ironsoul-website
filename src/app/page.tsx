@@ -61,6 +61,45 @@ export default function Home() {
     const { theme, setTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
 
+    // Form States
+    const [regName, setRegName] = useState('');
+    const [regEmail, setRegEmail] = useState('');
+    const [regPhone, setRegPhone] = useState('');
+    const [regEvent, setRegEvent] = useState('Public Speaking Workshop');
+    const [regStatus, setRegStatus] = useState('');
+    const [newsEmail, setNewsEmail] = useState('');
+    const [newsStatus, setNewsStatus] = useState('');
+
+    const handleRegister = async (e: any) => {
+        e.preventDefault();
+        setRegStatus('Registering...');
+        const res = await fetch('/api/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: regName, email: regEmail, phone: regPhone, event_name: regEvent })
+        });
+        if (res.ok) {
+            setRegStatus('Success! We will contact you soon.');
+            setRegName(''); setRegEmail(''); setRegPhone('');
+        } else setRegStatus('Failed to register. Try again.');
+        setTimeout(() => setRegStatus(''), 4000);
+    };
+
+    const handleSubscribe = async (e: any) => {
+        e.preventDefault();
+        setNewsStatus('Subscribing...');
+        const res = await fetch('/api/newsletter', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: newsEmail })
+        });
+        if (res.ok) {
+            setNewsStatus('Subscribed!');
+            setNewsEmail('');
+        } else setNewsStatus('Already subscribed or failed.');
+        setTimeout(() => setNewsStatus(''), 4000);
+    };
+
     useEffect(() => setMounted(true), []);
 
     // Setup parallax scroll
@@ -376,6 +415,39 @@ export default function Home() {
                 </div>
             </section>
 
+            {/* Event Registration Section */}
+            <section id="register" className="section bg-alt" style={{ padding: '4rem 0' }}>
+                <div className="container">
+                    <motion.h2 className="section-title" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>Join Our Next Program</motion.h2>
+                    <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} style={{ maxWidth: '600px', margin: '0 auto', background: 'var(--card-bg)', padding: '2rem', borderRadius: '15px', border: '1px solid var(--card-border)', boxShadow: '0 10px 30px rgba(0,0,0,0.2)' }}>
+                        <form onSubmit={handleRegister} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                            <div>
+                                <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-main)' }}>Full Name</label>
+                                <input type="text" value={regName} onChange={(e)=>setRegName(e.target.value)} required style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1px solid var(--card-border)', background: 'transparent', color: 'var(--text-main)' }} placeholder="Your Name" />
+                            </div>
+                            <div>
+                                <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-main)' }}>Email Address</label>
+                                <input type="email" value={regEmail} onChange={(e)=>setRegEmail(e.target.value)} required style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1px solid var(--card-border)', background: 'transparent', color: 'var(--text-main)' }} placeholder="email@example.com" />
+                            </div>
+                            <div>
+                                <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-main)' }}>Phone Number</label>
+                                <input type="tel" value={regPhone} onChange={(e)=>setRegPhone(e.target.value)} required style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1px solid var(--card-border)', background: 'transparent', color: 'var(--text-main)' }} placeholder="+91 9876543210" />
+                            </div>
+                            <div>
+                                <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-main)' }}>Select Event</label>
+                                <select value={regEvent} onChange={(e)=>setRegEvent(e.target.value)} style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1px solid var(--card-border)', background: 'var(--bg-main)', color: 'var(--text-main)' }}>
+                                    <option>Public Speaking Workshop</option>
+                                    <option>Leadership Summit</option>
+                                    <option>JAM Session Training</option>
+                                </select>
+                            </div>
+                            <button type="submit" className="btn-primary" style={{ marginTop: '1rem' }}>Register Now</button>
+                            {regStatus && <p style={{ textAlign: 'center', color: 'var(--accent-gold)', marginTop: '0.5rem' }}>{regStatus}</p>}
+                        </form>
+                    </motion.div>
+                </div>
+            </section>
+
             {/* Video Reviews Section */}
             {videoReviews.length > 0 && (
                 <section className="section">
@@ -415,10 +487,31 @@ export default function Home() {
                 </section>
             )}
 
-            {/* Thank You Section */}
-            <section className="section bg-alt" style={{ padding: '4rem 0' }}>
+            {/* Thank You Section & Newsletter */}
+            <section id="join" className="section bg-alt" style={{ padding: '4rem 0' }}>
                 <div className="container" style={{ textAlign: 'center', maxWidth: '800px' }}>
-                    <motion.h2 className="section-title" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>Thank You</motion.h2>
+                    <motion.h2 className="section-title" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>Thank You For Visiting</motion.h2>
+                    <motion.p style={{ color: 'var(--text-main)', opacity: 0.8, fontSize: '1.2rem', marginBottom: '2rem' }} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
+                        Join us on our journey to empower youth leadership and confidence!
+                    </motion.p>
+                    
+                    <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', background: 'var(--card-bg)', padding: '2rem', borderRadius: '15px', border: '1px solid var(--card-border)' }}>
+                        <h3 style={{ margin: 0, color: 'var(--accent-gold)' }}>Subscribe to our Newsletter</h3>
+                        <form onSubmit={handleSubscribe} style={{ display: 'flex', gap: '0.5rem', width: '100%', maxWidth: '400px', flexDirection: 'column' }}>
+                            <div style={{ display: 'flex', gap: '0.5rem', width: '100%' }}>
+                                <input type="email" value={newsEmail} onChange={(e)=>setNewsEmail(e.target.value)} required style={{ flex: 1, padding: '0.8rem', borderRadius: '8px', border: '1px solid var(--card-border)', background: 'transparent', color: 'var(--text-main)' }} placeholder="Enter your email" />
+                                <button type="submit" className="btn-primary" style={{ margin: 0 }}>Subscribe</button>
+                            </div>
+                            {newsStatus && <p style={{ color: 'var(--accent-gold)', margin: 0, fontSize: '0.9rem' }}>{newsStatus}</p>}
+                        </form>
+                    </motion.div>
+                </div>
+            </section>
+
+            {/* Detailed Thank You Section */}
+            <section className="section" style={{ padding: '4rem 0' }}>
+                <div className="container" style={{ textAlign: 'center', maxWidth: '800px' }}>
+                    <motion.h2 className="section-title" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>Our Gratitude</motion.h2>
                     <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} style={{ fontSize: '1.1rem', lineHeight: '1.8', color: '#ccc' }}>
                         <p style={{ marginBottom: '1rem' }}>Ironsoul Organisation expresses its deepest gratitude to all the schools, colleges, students, faculty, and supporters who have stood with us in this journey. Your encouragement has been the driving force behind our mission to empower youth with confidence, resilience, and leadership.</p>
                         <p style={{ marginBottom: '1rem' }}>We thank the students who participated in our JAM sessions, workshops, and motivational events — each of you represents the spirit of strength and inspiration that Ironsoul stands for.</p>

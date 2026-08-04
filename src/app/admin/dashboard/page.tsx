@@ -8,6 +8,7 @@ export default function Dashboard() {
     
     // Auth & Generic State
     const [status, setStatus] = useState('');
+    const [loading, setLoading] = useState(true);
     
     // Events State
     const [events, setEvents] = useState<any[]>([]);
@@ -34,6 +35,8 @@ export default function Dashboard() {
     const [videoTitle, setVideoTitle] = useState('');
     const [videoUrl, setVideoUrl] = useState('');
     const [videoFile, setVideoFile] = useState<File | null>(null);
+    const [registrations, setRegistrations] = useState<any[]>([]);
+    const [subscribers, setSubscribers] = useState<any[]>([]);
 
     useEffect(() => {
         fetch('/api/auth').then(res => {
@@ -46,13 +49,47 @@ export default function Dashboard() {
         fetch('/api/events').then(res => res.json()).then(data => setEvents(Array.isArray(data) ? data : []));
         fetch('/api/statistics').then(res => res.json()).then(data => setStats(Array.isArray(data) ? data : []));
         fetch('/api/testimonials').then(res => res.json()).then(data => setTestimonials(Array.isArray(data) ? data : []));
-        fetch('/api/video-reviews').then(res => res.json()).then(data => setVideos(Array.isArray(data) ? data : []));
+        fetch('/api/video-reviews')
+            .then(res => res.json())
+            .then(data => {
+                if (Array.isArray(data)) setVideos(data);
+            })
+            .catch(console.error);
+
+        fetch('/api/register')
+            .then(res => res.json())
+            .then(data => {
+                if (Array.isArray(data)) setRegistrations(data);
+            })
+            .catch(console.error);
+
+        fetch('/api/newsletter')
+            .then(res => res.json())
+            .then(data => {
+                if (Array.isArray(data)) setSubscribers(data);
+            })
+            .catch(console.error);
+        setLoading(false);
     };
 
     const handleDelete = async (endpoint: string, id: string) => {
         if (!confirm('Are you sure you want to delete this item?')) return;
         const res = await fetch(`/api/${endpoint}?id=${id}`, { method: 'DELETE' });
         if (res.ok) fetchData();
+    };
+
+    // --- EXPORT CSV ---
+    const exportCSV = (data: any[], filename: string) => {
+        if (!data.length) return alert('No data to export!');
+        const headers = Object.keys(data[0]).join(',');
+        const rows = data.map(obj => Object.values(obj).map(val => `"${val}"`).join(',')).join('\n');
+        const csv = `${headers}\n${rows}`;
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${filename}.csv`;
+        a.click();
     };
 
     // --- EVENTS HANDLERS ---
@@ -167,9 +204,11 @@ export default function Dashboard() {
             setStatus('Video Saved!');
             cancelVideoEdit();
             fetchData();
-        } else setStatus('Failed to save video.');
+        } else setStatus('Failed to delete video.');
         setTimeout(() => setStatus(''), 3000);
     };
+
+    if (loading) return <div style={{ color: '#fff', textAlign: 'center', marginTop: '20vh' }}>Loading...</div>;
 
     return (
         <div style={{ padding: '4rem 2rem', maxWidth: '1200px', margin: '0 auto', color: '#fff' }}>
@@ -334,6 +373,68 @@ export default function Dashboard() {
                         ))}
                     </div>
                 </div>
+            </div>
+
+            {/* Section 5: Leads & Registrations */}
+            <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid #333', borderRadius: '15px', padding: '2rem', marginBottom: '2rem', marginTop: '5rem' }}>
+                <h2 style={{ color: '#d4af37', marginBottom: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    Event Registrations
+                    <button className="btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem', margin: 0 }} onClick={() => exportCSV(registrations, 'Event_Registrations')}>Export CSV</button>
+                </h2>
+                {registrations.length === 0 ? <p style={{ color: '#fff' }}>No registrations yet.</p> : (
+                    <div style={{ overflowX: 'auto' }}>
+                        <table style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse', color: '#fff' }}>
+                            <thead>
+                                <tr style={{ borderBottom: '1px solid #333' }}>
+                                    <th style={{ padding: '1rem' }}>Name</th>
+                                    <th style={{ padding: '1rem' }}>Email</th>
+                                    <th style={{ padding: '1rem' }}>Phone</th>
+                                    <th style={{ padding: '1rem' }}>Event</th>
+                                    <th style={{ padding: '1rem' }}>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {registrations.map(r => (
+                                    <tr key={r.id} style={{ borderBottom: '1px solid #333' }}>
+                                        <td style={{ padding: '1rem' }}>{r.name}</td>
+                                        <td style={{ padding: '1rem' }}>{r.email}</td>
+                                        <td style={{ padding: '1rem' }}>{r.phone}</td>
+                                        <td style={{ padding: '1rem' }}>{r.event_name}</td>
+                                        <td style={{ padding: '1rem' }}>{new Date(r.created_at).toLocaleDateString()}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
+            </div>
+
+            {/* Section 6: Newsletter Subscribers */}
+            <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid #333', borderRadius: '15px', padding: '2rem', marginBottom: '2rem' }}>
+                <h2 style={{ color: '#d4af37', marginBottom: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    Newsletter Subscribers
+                    <button className="btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem', margin: 0 }} onClick={() => exportCSV(subscribers, 'Newsletter_Subscribers')}>Export CSV</button>
+                </h2>
+                {subscribers.length === 0 ? <p style={{ color: '#fff' }}>No subscribers yet.</p> : (
+                    <div style={{ overflowX: 'auto' }}>
+                        <table style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse', color: '#fff' }}>
+                            <thead>
+                                <tr style={{ borderBottom: '1px solid #333' }}>
+                                    <th style={{ padding: '1rem' }}>Email</th>
+                                    <th style={{ padding: '1rem' }}>Date Subscribed</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {subscribers.map(s => (
+                                    <tr key={s.id} style={{ borderBottom: '1px solid #333' }}>
+                                        <td style={{ padding: '1rem' }}>{s.email}</td>
+                                        <td style={{ padding: '1rem' }}>{new Date(s.created_at).toLocaleDateString()}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
             </div>
 
         </div>
