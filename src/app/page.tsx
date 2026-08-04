@@ -550,24 +550,6 @@ export default function Home() {
                 </div>
             </section>
 
-            <section className="marquee-section">
-                <div className="marquee-container">
-                    <VelocityMarquee baseVelocity={3}>
-                        <div className="marquee-card glass">
-                            <p>"A leader is one who knows the way, goes the way, and shows the way."</p>
-                            <span>- John C. Maxwell</span>
-                        </div>
-                        <div className="marquee-card glass">
-                            <p>"There are only two types of speakers in the world. 1. The nervous and 2. Liars."</p>
-                            <span>- Mark Twain</span>
-                        </div>
-                        <div className="marquee-card glass">
-                            <p>"Courage is what it takes to stand up and speak; courage is also what it takes to sit down and listen."</p>
-                            <span>- Winston Churchill</span>
-                        </div>
-                    </VelocityMarquee>
-                </div>
-            </section>
 
             {/* Join Us Section */}
             <section id="join" className="section" style={{ position: 'relative' }}>
