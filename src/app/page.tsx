@@ -6,6 +6,8 @@ import { useTheme } from "next-themes";
 import { Sun, Moon } from "lucide-react";
 import Tilt from "react-parallax-tilt";
 import { TextReveal } from "@/components/TextReveal";
+import { Magnetic } from "@/components/Magnetic";
+import { LiquidScroll } from "@/components/LiquidScroll";
 
 const fadeUp: any = {
     hidden: { opacity: 0, y: 50 },
@@ -177,13 +179,13 @@ export default function Home() {
                 <div className="nav-container">
                     <a href="#home" className="logo-link"><img src="/assets/logo.jpg" alt="IronSoul Logo" className="nav-logo" style={{ borderRadius: '5px' }} /></a>
                     <ul className={`nav-links ${navActive ? 'active' : ''}`}>
-                        <li><a href="#home" onClick={closeNav}>Home</a></li>
-                        <li><a href="#about" onClick={closeNav}>About</a></li>
-                        <li><a href="#testimonials" onClick={closeNav}>Testimonials</a></li>
-                        <li><a href="#team" onClick={closeNav}>Team</a></li>
-                        <li><a href="/blog" onClick={closeNav}>Blog</a></li>
-                        <li><a href="#programs" onClick={closeNav}>Programs</a></li>
-                        <li><a href="#join" className="btn-primary" onClick={closeNav}>Join Us</a></li>
+                        <Magnetic><li><a href="#home" onClick={closeNav}>Home</a></li></Magnetic>
+                        <Magnetic><li><a href="#about" onClick={closeNav}>About</a></li></Magnetic>
+                        <Magnetic><li><a href="#testimonials" onClick={closeNav}>Testimonials</a></li></Magnetic>
+                        <Magnetic><li><a href="#team" onClick={closeNav}>Team</a></li></Magnetic>
+                        <Magnetic><li><a href="/blog" onClick={closeNav}>Blog</a></li></Magnetic>
+                        <Magnetic><li><a href="#programs" onClick={closeNav}>Programs</a></li></Magnetic>
+                        <Magnetic><li><a href="#join" className="btn-primary" onClick={closeNav}>Join Us</a></li></Magnetic>
                         {mounted && (
                             <button 
                                 onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
@@ -221,7 +223,7 @@ export default function Home() {
                 >
                     <TextReveal text="Strength in Soul, Power in Action." className="hero-title highlight" />
                     <motion.p className="hero-subtitle" variants={fadeUp} style={{ marginTop: '1.5rem' }}>Empowering young minds to show their courage in speaking and leadership.</motion.p>
-                    <motion.a href="#about" className="btn-primary btn-large" variants={fadeUp} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>Discover Our Mission</motion.a>
+                    <Magnetic><motion.a href="#about" className="btn-primary btn-large" variants={fadeUp} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>Discover Our Mission</motion.a></Magnetic>
                 </motion.div>
                 <div className="hero-scroll" onClick={() => window.location.href = '#about'} style={{ position: 'absolute', bottom: '30px', left: '50%', cursor: 'pointer', zIndex: 3 }}>
                     <motion.div animate={{ y: [0, 10, 0] }} transition={{ repeat: Infinity, duration: 2 }}>↓</motion.div>
@@ -290,11 +292,12 @@ export default function Home() {
                     <motion.h2 className="section-title" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>Our Work & Events</motion.h2>
                     <motion.p className="section-subtitle" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>A glimpse into our impact, workshops, and JAM sessions.</motion.p>
                     
+                    <LiquidScroll>
                     <motion.div className="gallery-grid" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={staggerContainer}>
                         {events.length > 0 ? (
                             events.map((event: any) => (
                                 <Tilt key={event.id} tiltMaxAngleX={3} tiltMaxAngleY={3} scale={1.02}>
-                                    <motion.div className="gallery-item" variants={fadeUp} style={{ boxShadow: '0 15px 35px rgba(0,0,0,0.5)' }}>
+                                    <motion.div className="gallery-item glass" variants={fadeUp} style={{ boxShadow: '0 15px 35px rgba(0,0,0,0.5)' }}>
                                         <img src={event.imagePath} alt={event.title} loading="lazy" />
                                         <div className="gallery-overlay">
                                             <div>
@@ -309,6 +312,7 @@ export default function Home() {
                             <motion.div variants={fadeUp}><p style={{textAlign: 'center', color: '#666'}}>No events published yet.</p></motion.div>
                         )}
                     </motion.div>
+                    </LiquidScroll>
                 </div>
             </section>
 
@@ -381,6 +385,7 @@ export default function Home() {
                     <motion.h2 className="section-title" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>Our Programs</motion.h2>
                     <motion.p className="section-subtitle" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>Bringing young minds to show their courage in speaking with minimal charges.</motion.p>
                     
+                    <LiquidScroll>
                     <motion.div className="programs-grid" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={staggerContainer}>
                         <Tilt tiltMaxAngleX={5} tiltMaxAngleY={5} scale={1.02}>
                             <motion.div className="program-card" variants={fadeUp} style={{ height: '100%', boxShadow: '0 10px 40px rgba(0,0,0,0.6)' }}>
@@ -414,6 +419,7 @@ export default function Home() {
                             </motion.div>
                         </Tilt>
                     </motion.div>
+                    </LiquidScroll>
                 </div>
             </section>
 

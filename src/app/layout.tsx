@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { Chatbot } from "@/components/Chatbot";
 import { CustomCursor } from "@/components/CustomCursor";
 import { ScrollProgress } from "@/components/ScrollProgress";
+import { PageLoader } from "@/components/PageLoader";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -42,6 +43,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${outfit.className} antialiased`}>
         <ThemeProvider attribute="data-theme" defaultTheme="dark" enableSystem={false} disableTransitionOnChange={false}>
+          <PageLoader />
           <div className="mesh-bg" />
           <ScrollProgress />
           {children}
