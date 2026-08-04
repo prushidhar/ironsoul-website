@@ -47,6 +47,7 @@ export default function RootLayout({
           <PageLoader />
           <div className="mesh-bg" />
           <div className="noise-overlay" />
+          <div className="cursor-mask" />
           <ScrollProgress />
           <SmoothScroll>
             {children}

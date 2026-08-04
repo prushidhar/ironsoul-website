@@ -16,6 +16,8 @@ export function CustomCursor() {
 
         const updateMousePosition = (e: MouseEvent) => {
             setMousePosition({ x: e.clientX, y: e.clientY });
+            document.documentElement.style.setProperty('--mouse-x', `${e.clientX}px`);
+            document.documentElement.style.setProperty('--mouse-y', `${e.clientY}px`);
             
             // Spotlight tracking
             const cards = document.querySelectorAll('.glass, .about-card, .founder-spotlight, .team-card, .program-card, .marquee-card, .video-card');

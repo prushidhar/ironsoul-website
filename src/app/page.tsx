@@ -9,6 +9,8 @@ import { TextReveal } from "@/components/TextReveal";
 import { Magnetic } from "@/components/Magnetic";
 import { LiquidScroll } from "@/components/LiquidScroll";
 import { VelocityMarquee } from "@/components/VelocityMarquee";
+import { ParticleNetwork } from "@/components/ParticleNetwork";
+import { ScrambleText } from "@/components/ScrambleText";
 
 const fadeUp: any = {
     hidden: { opacity: 0, y: 50 },
@@ -208,6 +210,7 @@ export default function Home() {
             {/* Hero Section */}
             <section id="home" className="hero" style={{ position: 'relative', overflow: 'hidden' }}>
                 <div className="hero-aurora" />
+                <ParticleNetwork />
                 <motion.div 
                     style={{ 
                         position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', 
@@ -226,7 +229,9 @@ export default function Home() {
                     style={{ zIndex: 2, opacity: heroOpacity }}
                 >
                     <TextReveal text="Strength in Soul, Power in Action." className="hero-title highlight" />
-                    <motion.p className="hero-subtitle" variants={fadeUp} style={{ marginTop: '1.5rem' }}>Empowering young minds to show their courage in speaking and leadership.</motion.p>
+                    <motion.div className="hero-subtitle preserve-3d" variants={fadeUp} style={{ marginTop: '1.5rem' }}>
+                        <ScrambleText text="Empowering young minds to show their courage in speaking and leadership." />
+                    </motion.div>
                     <Magnetic><motion.a href="#about" className="btn-primary btn-large" variants={fadeUp} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>Discover Our Mission</motion.a></Magnetic>
                 </motion.div>
                 <div className="hero-scroll" onClick={() => window.location.href = '#about'} style={{ position: 'absolute', bottom: '30px', left: '50%', cursor: 'pointer', zIndex: 3 }}>
@@ -273,16 +278,16 @@ export default function Home() {
                     <motion.div className="about-grid" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={staggerContainer}>
                         
                         <Tilt tiltMaxAngleX={5} tiltMaxAngleY={5} scale={1.02} transitionSpeed={2500}>
-                            <motion.div className="about-card" variants={fadeUp} style={{ height: '100%', border: '1px solid rgba(212, 175, 55, 0.1)', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>
-                                <h3>Our Objective</h3>
-                                <p>The primary objective of IronSoul Organisation is to empower students by nurturing confidence, resilience, and leadership qualities through motivational sessions and soft skill development programs. We prepare individuals to face real-world challenges with strength and positivity.</p>
+                            <motion.div className="about-card preserve-3d" variants={fadeUp} style={{ height: '100%', border: '1px solid rgba(212, 175, 55, 0.1)', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>
+                                <h3 className="translate-z">Our Objective</h3>
+                                <p className="translate-z">The primary objective of IronSoul Organisation is to empower students by nurturing confidence, resilience, and leadership qualities through motivational sessions and soft skill development programs. We prepare individuals to face real-world challenges with strength and positivity.</p>
                             </motion.div>
                         </Tilt>
 
                         <Tilt tiltMaxAngleX={5} tiltMaxAngleY={5} scale={1.02} transitionSpeed={2500}>
-                            <motion.div className="about-card" variants={fadeUp} style={{ height: '100%', border: '1px solid rgba(212, 175, 55, 0.1)', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>
-                                <h3>The IronSoul Pledge</h3>
-                                <p className="pledge">"I pledge to uphold the values of IronSoul Organisation with honesty, discipline, respect, and dedication. I will strive to inspire others, continuously improve myself, work together with my team, and serve society with integrity. I will represent IronSoul with pride and responsibility."</p>
+                            <motion.div className="about-card preserve-3d" variants={fadeUp} style={{ height: '100%', border: '1px solid rgba(212, 175, 55, 0.1)', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>
+                                <h3 className="translate-z">The IronSoul Pledge</h3>
+                                <p className="pledge translate-z">"I pledge to uphold the values of IronSoul Organisation with honesty, discipline, respect, and dedication. I will strive to inspire others, continuously improve myself, work together with my team, and serve society with integrity. I will represent IronSoul with pride and responsibility."</p>
                             </motion.div>
                         </Tilt>
 
@@ -293,17 +298,19 @@ export default function Home() {
             {/* Gallery Section */}
             <section id="gallery" className="section bg-alt">
                 <div className="container">
-                    <motion.h2 className="section-title" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>Our Work & Events</motion.h2>
-                    <motion.p className="section-subtitle" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>A glimpse into our impact, workshops, and JAM sessions.</motion.p>
+                    <motion.div className="section-header" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.5 }} variants={staggerContainer}>
+                        <h2 className="section-title"><ScrambleText text="Our Work & Events" /></h2>
+                        <motion.div className="section-line" variants={fadeUp} />
+                    </motion.div>
                     
                     <LiquidScroll>
                     <motion.div className="gallery-grid" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={staggerContainer}>
                         {events.length > 0 ? (
                             events.map((event: any) => (
                                 <Tilt key={event.id} tiltMaxAngleX={3} tiltMaxAngleY={3} scale={1.02} glareEnable={true} glareMaxOpacity={0.15} glareColor="#F59E0B" glarePosition="all">
-                                    <motion.div className="gallery-item glass" variants={fadeUp} style={{ boxShadow: '0 15px 35px rgba(0,0,0,0.5)' }}>
-                                        <img src={event.imagePath} alt={event.title} loading="lazy" />
-                                        <div className="gallery-overlay">
+                                    <motion.div className="gallery-item glass preserve-3d" variants={fadeUp} style={{ boxShadow: '0 15px 35px rgba(0,0,0,0.5)' }}>
+                                        <img src={event.imagePath} alt={event.title} loading="lazy" className="translate-z" />
+                                        <div className="gallery-overlay translate-z">
                                             <div>
                                                 <span>{event.title}</span>
                                                 {event.description && <p style={{fontSize: '0.9rem', color: '#ccc'}}>{event.description}</p>}
@@ -321,15 +328,18 @@ export default function Home() {
             </section>
 
             {/* Team Section */}
-            <section id="team" className="section">
+            <section id="team" className="section" style={{ background: 'var(--bg-alt)' }}>
                 <div className="container">
-                    <motion.h2 className="section-title" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>Our Executive Committee</motion.h2>
+                    <motion.div className="section-header" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.5 }} variants={staggerContainer}>
+                        <h2 className="section-title"><ScrambleText text="The Core Team" /></h2>
+                        <motion.div className="section-line" variants={fadeUp} />
+                    </motion.div>
                     
                     {/* Founder Spotlight */}
                     <div style={{ overflow: 'hidden', padding: '10px 0' }}>
-                        <motion.div className="founder-spotlight" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}>
-                            <motion.img src="/assets/bhanu.jpg" alt="Oggu Bhanu sasitha" loading="lazy" className="founder-spotlight-photo" onError={(e: any) => e.target.src='/assets/avatar.jpg'} variants={slideInLeft} />
-                            <motion.div className="founder-spotlight-content" variants={slideInRight}>
+                        <motion.div className="founder-spotlight preserve-3d" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}>
+                            <motion.img src="/assets/bhanu.jpg" alt="Oggu Bhanu sasitha" loading="lazy" className="founder-spotlight-photo translate-z" onError={(e: any) => e.target.src='/assets/avatar.jpg'} variants={slideInLeft} />
+                            <motion.div className="founder-spotlight-content translate-z" variants={slideInRight}>
                                 <h3>Oggu Bhanu Sasitha</h3>
                                 <h4>Founder, Public Speaker & Motivator</h4>
                                 <p>Oggu Bhanu Sasitha has been struggling independently from birth to now, creating a brand for students to inspire and bring forth many "Bhanu’s" across the nation. She had the honour of meeting Prime Minister Narendra Modi in the Virtual Youth Budget Quest 2026, and has hosted numerous events as an MC, conducted impactful sessions as a public speaker, and inspired audiences as a motivational speaker. Through her initiatives in schools and universities, she continues to bring out hidden talents and channel them towards building a stronger nation.</p>
@@ -340,42 +350,42 @@ export default function Home() {
                     <motion.div className="team-grid" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={staggerContainer}>
 
                         <Tilt tiltMaxAngleX={10} tiltMaxAngleY={10} scale={1.05} glareEnable={true} glareMaxOpacity={0.15} glareColor="#F59E0B" glarePosition="all">
-                            <motion.div className="team-card" variants={fadeUp}>
-                                <img src="/assets/thushitha.jpg" alt="Kalavapalli Thushitha Reddy" loading="lazy" className="team-photo" onError={(e: any) => e.target.src='/assets/avatar.jpg'} />
-                                <h3>Kalavapalli Thushitha Reddy</h3>
-                                <p className="team-role">President</p>
+                            <motion.div className="team-card preserve-3d" variants={fadeUp}>
+                                <img src="/assets/thushitha.jpg" alt="Kalavapalli Thushitha Reddy" loading="lazy" className="team-photo translate-z" onError={(e: any) => e.target.src='/assets/avatar.jpg'} />
+                                <h3 className="translate-z">Kalavapalli Thushitha Reddy</h3>
+                                <p className="team-role translate-z">President</p>
                             </motion.div>
                         </Tilt>
 
                         <Tilt tiltMaxAngleX={10} tiltMaxAngleY={10} scale={1.05}>
-                            <motion.div className="team-card" variants={fadeUp}>
-                                <img src="/assets/santhosh.jpg" alt="Koduri Santhosh" loading="lazy" className="team-photo" onError={(e: any) => e.target.src='/assets/avatar.jpg'} />
-                                <h3>Koduri Santhosh</h3>
-                                <p className="team-role">Event Coordinator</p>
+                            <motion.div className="team-card preserve-3d" variants={fadeUp}>
+                                <img src="/assets/santhosh.jpg" alt="Koduri Santhosh" loading="lazy" className="team-photo translate-z" onError={(e: any) => e.target.src='/assets/avatar.jpg'} />
+                                <h3 className="translate-z">Koduri Santhosh</h3>
+                                <p className="team-role translate-z">Event Coordinator</p>
                             </motion.div>
                         </Tilt>
 
                         <Tilt tiltMaxAngleX={10} tiltMaxAngleY={10} scale={1.05}>
-                            <motion.div className="team-card" variants={fadeUp}>
-                                <img src="/assets/kaveri.jpg" alt="Andugula Kaveri" loading="lazy" className="team-photo" onError={(e: any) => e.target.src='/assets/avatar.jpg'} />
-                                <h3>Andugula Kaveri</h3>
-                                <p className="team-role">Chief Financial Officer (CFO)</p>
+                            <motion.div className="team-card preserve-3d" variants={fadeUp}>
+                                <img src="/assets/kaveri.jpg" alt="Andugula Kaveri" loading="lazy" className="team-photo translate-z" onError={(e: any) => e.target.src='/assets/avatar.jpg'} />
+                                <h3 className="translate-z">Andugula Kaveri</h3>
+                                <p className="team-role translate-z">Chief Financial Officer (CFO)</p>
                             </motion.div>
                         </Tilt>
 
                         <Tilt tiltMaxAngleX={10} tiltMaxAngleY={10} scale={1.05}>
-                            <motion.div className="team-card" variants={fadeUp}>
-                                <img src="/assets/likhitha.jpg" alt="Patchava Likhitha" loading="lazy" className="team-photo" onError={(e: any) => e.target.src='/assets/avatar.jpg'} />
-                                <h3>Patchava Likhitha</h3>
-                                <p className="team-role">HR Manager</p>
+                            <motion.div className="team-card preserve-3d" variants={fadeUp}>
+                                <img src="/assets/likhitha.jpg" alt="Patchava Likhitha" loading="lazy" className="team-photo translate-z" onError={(e: any) => e.target.src='/assets/avatar.jpg'} />
+                                <h3 className="translate-z">Patchava Likhitha</h3>
+                                <p className="team-role translate-z">HR Manager</p>
                             </motion.div>
                         </Tilt>
 
                         <Tilt tiltMaxAngleX={10} tiltMaxAngleY={10} scale={1.05}>
-                            <motion.div className="team-card" variants={fadeUp}>
-                                <img src="/assets/joshna.jpg" alt="Renangi Joshna" loading="lazy" className="team-photo" onError={(e: any) => e.target.src='/assets/avatar.jpg'} />
-                                <h3>Renangi Joshna</h3>
-                                <p className="team-role">Development Head</p>
+                            <motion.div className="team-card preserve-3d" variants={fadeUp}>
+                                <img src="/assets/joshna.jpg" alt="Renangi Joshna" loading="lazy" className="team-photo translate-z" onError={(e: any) => e.target.src='/assets/avatar.jpg'} />
+                                <h3 className="translate-z">Renangi Joshna</h3>
+                                <p className="team-role translate-z">Development Head</p>
                             </motion.div>
                         </Tilt>
 
@@ -392,28 +402,33 @@ export default function Home() {
                     <LiquidScroll>
                     <motion.div className="programs-grid" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={staggerContainer}>
                         <Tilt tiltMaxAngleX={5} tiltMaxAngleY={5} scale={1.02} glareEnable={true} glareMaxOpacity={0.15} glareColor="#F59E0B" glarePosition="all">
-                            <motion.div className="program-card glass" variants={fadeUp} style={{ height: '100%', boxShadow: '0 10px 40px rgba(0,0,0,0.6)' }}>
-                                <div className="program-icon">🏫</div>
-                                <h3>Plan for Schools</h3>
-                                <div className="program-list" style={{ textAlign: 'left', margin: '1rem 0' }}>
-                                    <p><strong>🎤 Session Structure:</strong> Orientation + JAM session (1 hr), Motivational talk + soft skill activity (1–2 hrs)</p>
-                                    <p style={{ marginTop: '0.5rem' }}><strong>🏆 Prizes:</strong> Best Speaker, Most Confident Student, Participation E-Certificates for all.</p>
+                            <motion.div className="program-card glass preserve-3d" variants={fadeUp} style={{ height: '100%', boxShadow: '0 10px 40px rgba(0,0,0,0.6)' }}>
+                                <div className="program-icon translate-z">🏫</div>
+                                <h3 className="translate-z">Plan for Schools</h3>
+                                <div className="program-list translate-z" style={{ textAlign: 'left', margin: '1rem 0' }}>
+                                    <p>✨ Overcome stage fear and speak with confidence</p>
+                                    <p>✨ Master the art of storytelling</p>
+                                    <p>✨ Participate in engaging group discussions</p>
+                                    <p>✨ Build strong teamwork and leadership skills</p>
                                 </div>
                                 <div className="pricing">
                                     <p><strong>Session Cost:</strong> ₹2,000 – ₹5,000 / session</p>
                                     <p><strong>Membership Fee:</strong> ₹100 – ₹200 / year</p>
                                     <p><em>Benefits: JAM sessions, workshops, certificates, recognition badges</em></p>
                                 </div>
+                                <a href="#join" className="btn-secondary translate-z" style={{ marginTop: 'auto', display: 'inline-block' }}>Get Started</a>
                             </motion.div>
                         </Tilt>
 
                         <Tilt tiltMaxAngleX={5} tiltMaxAngleY={5} scale={1.02} glareEnable={true} glareMaxOpacity={0.15} glareColor="#F59E0B" glarePosition="all">
-                            <motion.div className="program-card glass" variants={fadeUp} style={{ height: '100%', boxShadow: '0 10px 40px rgba(0,0,0,0.6)' }}>
-                                <div className="program-icon">🎓</div>
-                                <h3>Plan for Colleges</h3>
-                                <div className="program-list" style={{ textAlign: 'left', margin: '1rem 0' }}>
-                                    <p><strong>🎤 Session Structure:</strong> Orientation + JAM session (1–2 hrs), Advanced workshops (communication, leadership, emotional intelligence), Motivational seminar (2–3 hrs)</p>
-                                    <p style={{ marginTop: '0.5rem' }}><strong>🏆 Prizes:</strong> Best Speaker, Most Inspirational Leader, Best Communicator, Participation E-Certificates for all.</p>
+                            <motion.div className="program-card glass preserve-3d" variants={fadeUp} style={{ height: '100%', boxShadow: '0 10px 40px rgba(0,0,0,0.6)' }}>
+                                <div className="program-icon translate-z">🎓</div>
+                                <h3 className="translate-z">Plan for Colleges</h3>
+                                <div className="program-list translate-z" style={{ textAlign: 'left', margin: '1rem 0' }}>
+                                    <p>🚀 Advanced interview preparation techniques</p>
+                                    <p>🚀 Essential life skills for professional success</p>
+                                    <p>🚀 Mastering body language and non-verbal cues</p>
+                                    <p>🚀 Handling pressure with poise and confidence</p>
                                 </div>
                                 <div className="pricing">
                                     <p><strong>Session Cost:</strong> ₹5,000 – ₹10,000 / session</p>
