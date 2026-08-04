@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Chatbot } from "@/components/Chatbot";
+import { CustomCursor } from "@/components/CustomCursor";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -42,6 +43,7 @@ export default function RootLayout({
         <ThemeProvider attribute="data-theme" defaultTheme="dark" enableSystem={false} disableTransitionOnChange={false}>
           {children}
           <Chatbot />
+          <CustomCursor />
         </ThemeProvider>
       </body>
     </html>

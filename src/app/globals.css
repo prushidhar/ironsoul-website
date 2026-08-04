@@ -749,3 +749,41 @@ footer {
         grid-template-columns: 1fr;
     }
 }
+
+/* UI Upgrade V3.0 Styles */
+.glass, .about-card, .founder-spotlight, .team-card, .program-card, .marquee-card, .video-card {
+  background: rgba(255, 255, 255, 0.03) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+[data-theme='light'] .glass,
+[data-theme='light'] .about-card, 
+[data-theme='light'] .founder-spotlight, 
+[data-theme='light'] .team-card, 
+[data-theme='light'] .program-card, 
+[data-theme='light'] .marquee-card, 
+[data-theme='light'] .video-card {
+  background: rgba(0, 0, 0, 0.03) !important;
+  border: 1px solid rgba(0, 0, 0, 0.05) !important;
+}
+
+@media (pointer: fine) {
+    body, a, button, input, textarea {
+        cursor: none !important;
+    }
+}
+
+.custom-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: var(--accent-gold);
+    pointer-events: none;
+    z-index: 999999;
+    mix-blend-mode: difference;
+}
