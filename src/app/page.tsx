@@ -178,8 +178,9 @@ export default function Home() {
                     <ul className={`nav-links ${navActive ? 'active' : ''}`}>
                         <li><a href="#home" onClick={closeNav}>Home</a></li>
                         <li><a href="#about" onClick={closeNav}>About</a></li>
-                        <li><a href="#gallery" onClick={closeNav}>Gallery</a></li>
+                        <li><a href="#testimonials" onClick={closeNav}>Testimonials</a></li>
                         <li><a href="#team" onClick={closeNav}>Team</a></li>
+                        <li><a href="/blog" onClick={closeNav}>Blog</a></li>
                         <li><a href="#programs" onClick={closeNav}>Programs</a></li>
                         <li><a href="#join" className="btn-primary" onClick={closeNav}>Join Us</a></li>
                         {mounted && (

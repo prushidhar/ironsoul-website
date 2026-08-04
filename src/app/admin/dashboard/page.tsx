@@ -37,6 +37,13 @@ export default function Dashboard() {
     const [videoFile, setVideoFile] = useState<File | null>(null);
     const [registrations, setRegistrations] = useState<any[]>([]);
     const [subscribers, setSubscribers] = useState<any[]>([]);
+    
+    // Blog State
+    const [blogs, setBlogs] = useState<any[]>([]);
+    const [editBlogId, setEditBlogId] = useState('');
+    const [blogTitle, setBlogTitle] = useState('');
+    const [blogContent, setBlogContent] = useState('');
+    const [blogAuthor, setBlogAuthor] = useState('');
 
     useEffect(() => {
         fetch('/api/auth').then(res => {
@@ -69,6 +76,14 @@ export default function Dashboard() {
                 if (Array.isArray(data)) setSubscribers(data);
             })
             .catch(console.error);
+
+        fetch('/api/blog')
+            .then(res => res.json())
+            .then(data => {
+                if (Array.isArray(data)) setBlogs(data);
+            })
+            .catch(console.error);
+            
         setLoading(false);
     };
 
@@ -204,11 +219,44 @@ export default function Dashboard() {
             setStatus('Video Saved!');
             cancelVideoEdit();
             fetchData();
-        } else setStatus('Failed to delete video.');
+        } else setStatus('Failed to save video.');
         setTimeout(() => setStatus(''), 3000);
     };
 
-    if (loading) return <div style={{ color: '#fff', textAlign: 'center', marginTop: '20vh' }}>Loading...</div>;
+    // --- BLOG HANDLERS ---
+    const handleBlogEdit = (b: any) => {
+        setEditBlogId(b.id); setBlogTitle(b.title); setBlogContent(b.content); setBlogAuthor(b.author);
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    };
+    const cancelBlogEdit = () => {
+        setEditBlogId(''); setBlogTitle(''); setBlogContent(''); setBlogAuthor('');
+    };
+    const handleBlogUpload = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!blogTitle || !blogContent) return alert('Title and Content required!');
+        setStatus(editBlogId ? 'Updating Blog...' : 'Publishing Blog...');
+        
+        const payload = editBlogId 
+            ? { id: editBlogId, title: blogTitle, content: blogContent, author: blogAuthor } 
+            : { title: blogTitle, content: blogContent, author: blogAuthor };
+
+        const res = await fetch('/api/blog', {
+            method: editBlogId ? 'PUT' : 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        if (res.ok) {
+            setStatus('Blog Saved!');
+            cancelBlogEdit();
+            fetchData();
+        } else {
+            const data = await res.json();
+            setStatus(data.error || 'Failed to save blog.');
+        }
+        setTimeout(() => setStatus(''), 3000);
+    };
+
+    if (loading) return <div style={{ color: 'var(--text-main)', textAlign: 'center', marginTop: '20vh' }}>Loading...</div>;
 
     return (
         <div style={{ padding: '4rem 2rem', maxWidth: '1200px', margin: '0 auto', color: '#fff' }}>
@@ -435,6 +483,48 @@ export default function Dashboard() {
                         </table>
                     </div>
                 )}
+            </div>
+
+            {/* Section 7: Blog Manager */}
+            <h2 style={{ color: 'var(--accent-gold)', borderBottom: '1px solid var(--card-border)', paddingBottom: '0.5rem', marginTop: '5rem' }}>5. Blog Content Manager</h2>
+            <p style={{ color: 'var(--text-main)', opacity: 0.8, marginBottom: '2rem' }}>Write and publish articles to your /blog page.</p>
+            <div className="admin-grid">
+                <div className="form-container" style={{ margin: 0, height: 'fit-content' }}>
+                    <form onSubmit={handleBlogUpload}>
+                        <div className="form-group">
+                            <label>Blog Title</label>
+                            <input type="text" value={blogTitle} onChange={(e) => setBlogTitle(e.target.value)} required />
+                        </div>
+                        <div className="form-group">
+                            <label>Author (Optional)</label>
+                            <input type="text" value={blogAuthor} onChange={(e) => setBlogAuthor(e.target.value)} placeholder="IronSoul Team" />
+                        </div>
+                        <div className="form-group">
+                            <label>Content (Supports plain text with paragraphs)</label>
+                            <textarea value={blogContent} onChange={(e) => setBlogContent(e.target.value)} required rows={12} style={{ width: '100%', padding: '0.8rem', borderRadius: '5px', background: 'transparent', color: 'var(--text-main)', border: '1px solid var(--card-border)', fontFamily: 'inherit' }} />
+                        </div>
+                        <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+                            <button type="submit" className="btn-primary btn-submit" style={{ margin: 0 }}>{editBlogId ? 'Update Post' : 'Publish Post'}</button>
+                            {editBlogId && <button type="button" onClick={cancelBlogEdit} className="btn-primary" style={{ margin: 0, background: '#333', color: '#fff' }}>Cancel</button>}
+                        </div>
+                    </form>
+                </div>
+                <div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                        {blogs.length === 0 ? <p style={{ color: 'var(--text-main)' }}>No blog posts yet.</p> : blogs.map(b => (
+                            <div key={b.id} style={{ display: 'flex', gap: '1rem', background: 'var(--card-bg)', border: '1px solid var(--card-border)', padding: '1rem', borderRadius: '10px', alignItems: 'center' }}>
+                                <div style={{ flex: 1, overflow: 'hidden' }}>
+                                    <h4 style={{ margin: 0, color: 'var(--accent-gold)' }}>{b.title}</h4>
+                                    <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-main)' }}>/{b.slug}</p>
+                                </div>
+                                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                    <button onClick={() => handleBlogEdit(b)} style={{ background: 'var(--accent-gold)', color: '#000', border: 'none', padding: '0.3rem 0.8rem', borderRadius: '5px', cursor: 'pointer', fontSize: '0.8rem' }}>Edit</button>
+                                    <button onClick={() => handleDelete('blog', b.id)} style={{ background: '#ff4444', color: '#fff', border: 'none', padding: '0.3rem 0.8rem', borderRadius: '5px', cursor: 'pointer', fontSize: '0.8rem' }}>Delete</button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
             </div>
 
         </div>
