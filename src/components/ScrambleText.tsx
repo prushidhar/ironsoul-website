@@ -29,7 +29,7 @@ export function ScrambleText({ text, className }: { text: string, className?: st
             if (iteration >= text.length) {
                 clearInterval(interval);
             }
-            iteration += 1 / 3;
+            iteration += 1;
         }, 30);
 
         return () => clearInterval(interval);

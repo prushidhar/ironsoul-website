@@ -229,9 +229,9 @@ export default function Home() {
                     style={{ zIndex: 2, opacity: heroOpacity }}
                 >
                     <TextReveal text="Strength in Soul, Power in Action." className="hero-title highlight" />
-                    <motion.div className="hero-subtitle preserve-3d" variants={fadeUp} style={{ marginTop: '1.5rem' }}>
-                        <ScrambleText text="Empowering young minds to show their courage in speaking and leadership." />
-                    </motion.div>
+                    <motion.p className="hero-subtitle preserve-3d" variants={fadeUp} style={{ marginTop: '1.5rem' }}>
+                        Empowering young minds to show their courage in speaking and leadership.
+                    </motion.p>
                     <Magnetic><motion.a href="#about" className="btn-primary btn-large" variants={fadeUp} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>Discover Our Mission</motion.a></Magnetic>
                 </motion.div>
                 <div className="hero-scroll" onClick={() => window.location.href = '#about'} style={{ position: 'absolute', bottom: '30px', left: '50%', cursor: 'pointer', zIndex: 3 }}>
