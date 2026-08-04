@@ -2,6 +2,8 @@
 
 import { useEffect, useState, useRef } from "react";
 import { motion, useScroll, useTransform, useInView, animate } from "framer-motion";
+import { useTheme } from "next-themes";
+import { Sun, Moon } from "lucide-react";
 import Tilt from "react-parallax-tilt";
 
 const fadeUp: any = {
@@ -56,10 +58,16 @@ export default function Home() {
     const [navActive, setNavActive] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const [origin, setOrigin] = useState('');
-    
-    // Parallax background for hero
+    const { theme, setTheme } = useTheme();
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => setMounted(true), []);
+
+    // Setup parallax scroll
     const { scrollY } = useScroll();
-    const yHero = useTransform(scrollY, [0, 1000], [0, 300]);
+    const heroY = useTransform(scrollY, [0, 1000], [0, 400]);
+    const heroOpacity = useTransform(scrollY, [0, 600], [1, 0]);
+    const heroScale = useTransform(scrollY, [0, 1000], [1, 1.2]);
 
     useEffect(() => {
         fetch('/api/events')
@@ -135,6 +143,15 @@ export default function Home() {
                         <li><a href="#team" onClick={closeNav}>Team</a></li>
                         <li><a href="#programs" onClick={closeNav}>Programs</a></li>
                         <li><a href="#join" className="btn-primary" onClick={closeNav}>Join Us</a></li>
+                        {mounted && (
+                            <button 
+                                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                                style={{ background: 'transparent', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', color: 'inherit', marginLeft: '1rem' }}
+                                title="Toggle Theme"
+                            >
+                                {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+                            </button>
+                        )}
                     </ul>
                     <div className="hamburger" onClick={toggleNav}>
                         <span style={{ transform: navActive ? 'rotate(45deg) translate(5px, 5px)' : 'none' }}></span>
@@ -151,42 +168,23 @@ export default function Home() {
                         position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', 
                         backgroundImage: "linear-gradient(rgba(10, 10, 12, 0.7), rgba(10, 10, 12, 0.9)), url('/assets/hero.jpg')",
                         backgroundSize: 'cover', backgroundPosition: 'center',
-                        y: yHero
+                        y: heroY,
+                        scale: heroScale
                     }} 
-                />
-
-                {/* Ambient Particles */}
-                <div className="particles">
-                    {[...Array(20)].map((_, i) => (
-                        <div key={i} className="particle" style={{
-                            left: `${Math.random() * 100}%`,
-                            animationDuration: `${15 + Math.random() * 15}s`,
-                            animationDelay: `${Math.random() * 10}s`
-                        }}></div>
-                    ))}
-                </div>
-                
-                {/* Floating glowing orbs for ultra-premium feel */}
-                <motion.div
-                    animate={{ y: [0, -20, 0], opacity: [0.3, 0.6, 0.3] }}
-                    transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-                    style={{ position: 'absolute', top: '20%', left: '10%', width: '300px', height: '300px', background: 'radial-gradient(circle, rgba(212,175,55,0.15) 0%, rgba(0,0,0,0) 70%)', filter: 'blur(40px)', zIndex: 1 }}
-                />
-                <motion.div
-                    animate={{ y: [0, 30, 0], opacity: [0.2, 0.5, 0.2] }}
-                    transition={{ repeat: Infinity, duration: 5, ease: "easeInOut", delay: 1 }}
-                    style={{ position: 'absolute', bottom: '10%', right: '10%', width: '400px', height: '400px', background: 'radial-gradient(circle, rgba(212,175,55,0.1) 0%, rgba(0,0,0,0) 70%)', filter: 'blur(50px)', zIndex: 1 }}
                 />
 
                 <motion.div 
                     className="hero-content" 
                     initial="hidden" animate="visible" variants={staggerContainer}
-                    style={{ zIndex: 2 }}
+                    style={{ zIndex: 2, opacity: heroOpacity }}
                 >
                     <motion.h1 className="hero-title" variants={fadeUp}>Strength in Soul,<br/><span className="highlight">Power in Action.</span></motion.h1>
                     <motion.p className="hero-subtitle" variants={fadeUp}>Empowering young minds to show their courage in speaking and leadership.</motion.p>
                     <motion.a href="#about" className="btn-primary btn-large" variants={fadeUp} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>Discover Our Mission</motion.a>
                 </motion.div>
+                <div className="hero-scroll" onClick={() => window.location.href = '#about'} style={{ position: 'absolute', bottom: '30px', left: '50%', cursor: 'pointer', zIndex: 3 }}>
+                    <motion.div animate={{ y: [0, 10, 0] }} transition={{ repeat: Infinity, duration: 2 }}>↓</motion.div>
+                </div>
             </section>
 
             {/* Impact Counter Section */}
