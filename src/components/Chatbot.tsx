@@ -7,19 +7,9 @@ import { useChat } from '@ai-sdk/react';
 
 export function Chatbot() {
     const [isOpen, setIsOpen] = useState(false);
+    const [messages, setMessages] = useState<any[]>([]);
     const [input, setInput] = useState('');
-    const { messages, append, isLoading, error } = useChat({
-        api: '/api/chat',
-        onError: (e) => console.error("Chat Error:", e)
-    });
-
-    const handleFormSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!input.trim() || isLoading) return;
-        append({ role: 'user', content: input });
-        setInput('');
-    };
-    
+    const [isLoading, setIsLoading] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     const scrollToBottom = () => {
@@ -29,6 +19,65 @@ export function Chatbot() {
     useEffect(() => {
         scrollToBottom();
     }, [messages]);
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!input.trim() || isLoading) return;
+
+        const userMsg = { id: Date.now().toString(), role: 'user', content: input };
+        const newMessages = [...messages, userMsg];
+        setMessages(newMessages);
+        setInput('');
+        setIsLoading(true);
+
+        try {
+            const res = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ messages: newMessages })
+            });
+
+            if (!res.ok) {
+                const errorData = await res.text();
+                console.error("API Error Response:", errorData);
+                throw new Error("Failed to fetch response: " + errorData);
+            }
+            if (!res.body) throw new Error("No response body");
+
+            const reader = res.body.getReader();
+            const decoder = new TextDecoder();
+            const assistantMsgId = (Date.now() + 1).toString();
+            
+            setMessages(prev => [...prev, { id: assistantMsgId, role: 'assistant', content: '' }]);
+
+            let receivedText = false;
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+                
+                const text = decoder.decode(value, { stream: true });
+                if (text) {
+                    receivedText = true;
+                    setMessages(prev => prev.map(msg => 
+                        msg.id === assistantMsgId ? { ...msg, content: msg.content + text } : msg
+                    ));
+                }
+            }
+
+            // If the stream ended but we received no text at all (e.g. API key failure mid-stream)
+            if (!receivedText) {
+                setMessages(prev => prev.map(msg => 
+                    msg.id === assistantMsgId ? { ...msg, content: 'I am currently unable to process requests. Please ensure the AI API key is configured correctly.' } : msg
+                ));
+            }
+
+        } catch (error) {
+            console.error("Chat Error:", error);
+            setMessages(prev => [...prev, { id: Date.now().toString(), role: 'assistant', content: 'Sorry, I encountered an error. Please try again.' }]);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     return (
         <div style={{ position: 'fixed', bottom: '2rem', right: '2rem', zIndex: 9999 }}>
@@ -102,7 +151,7 @@ export function Chatbot() {
                         </div>
 
                         {/* Input */}
-                        <form onSubmit={handleFormSubmit} style={{ padding: '1rem', borderTop: '1px solid var(--card-border)', display: 'flex', gap: '0.5rem', background: 'var(--bg-main)' }}>
+                        <form onSubmit={handleSubmit} style={{ padding: '1rem', borderTop: '1px solid var(--card-border)', display: 'flex', gap: '0.5rem', background: 'var(--bg-main)' }}>
                             <input 
                                 value={input} 
                                 onChange={(e) => setInput(e.target.value)} 
