@@ -2,7 +2,9 @@
 
 :root {
     --bg-main: #F8FAFC;
+    --bg-alt: #F1F5F9;
     --text-main: #0F172A;
+    --text-secondary: #475569;
     --accent-gold: #D97706;
     --card-bg: rgba(255, 255, 255, 0.85);
     --card-border: rgba(0, 0, 0, 0.1);
@@ -10,7 +12,9 @@
 
 [data-theme='dark'] {
     --bg-main: #0B0B0E;
+    --bg-alt: #13131A;
     --text-main: #E2E8F0;
+    --text-secondary: #94A3B8;
     --accent-gold: #F59E0B;
     --card-bg: rgba(20, 20, 25, 0.7);
     --card-border: rgba(255, 255, 255, 0.05);
@@ -146,6 +150,11 @@ a {
     border-bottom: 1px solid var(--card-border);
 }
 
+[data-theme='light'] #navbar.scrolled {
+    background: rgba(255, 255, 255, 0.95);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
 .nav-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -177,6 +186,7 @@ a {
     font-weight: 400;
     font-size: 1rem;
     transition: color 0.3s ease;
+    color: var(--text-main);
 }
 
 .nav-links a:hover {
@@ -350,7 +360,8 @@ a {
 .founder-spotlight-content p {
     font-size: 1.05rem;
     line-height: 1.8;
-    color: #ddd;
+    color: var(--text-main);
+    opacity: 0.9;
 }
 
 /* Team Section */
@@ -521,6 +532,11 @@ footer {
     border-top: 1px solid var(--card-border);
 }
 
+[data-theme='light'] footer {
+    background: var(--bg-alt);
+    border-top: 1px solid rgba(0,0,0,0.1);
+}
+
 .footer-content {
     display: flex;
     justify-content: space-between;
@@ -636,11 +652,11 @@ footer {
 }
 .marquee-container::before {
     left: 0;
-    background: linear-gradient(to right, var(--bg-dark), transparent);
+    background: linear-gradient(to right, var(--bg-main), transparent);
 }
 .marquee-container::after {
     right: 0;
-    background: linear-gradient(to left, var(--bg-dark), transparent);
+    background: linear-gradient(to left, var(--bg-main), transparent);
 }
 
 .marquee-content {
@@ -671,7 +687,8 @@ footer {
 
 .marquee-card p {
     font-style: italic;
-    color: #ddd;
+    color: var(--text-main);
+    opacity: 0.8;
     margin-bottom: 1.5rem;
     font-size: 1.1rem;
 }
