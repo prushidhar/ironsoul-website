@@ -7,10 +7,18 @@ import { useChat } from '@ai-sdk/react';
 
 export function Chatbot() {
     const [isOpen, setIsOpen] = useState(false);
-    const { messages, input, handleInputChange, handleSubmit, isLoading, error } = useChat({
+    const [input, setInput] = useState('');
+    const { messages, append, isLoading, error } = useChat({
         api: '/api/chat',
         onError: (e) => console.error("Chat Error:", e)
     });
+
+    const handleFormSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!input.trim() || isLoading) return;
+        append({ role: 'user', content: input });
+        setInput('');
+    };
     
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -94,10 +102,10 @@ export function Chatbot() {
                         </div>
 
                         {/* Input */}
-                        <form onSubmit={handleSubmit} style={{ padding: '1rem', borderTop: '1px solid var(--card-border)', display: 'flex', gap: '0.5rem', background: 'var(--bg-main)' }}>
+                        <form onSubmit={handleFormSubmit} style={{ padding: '1rem', borderTop: '1px solid var(--card-border)', display: 'flex', gap: '0.5rem', background: 'var(--bg-main)' }}>
                             <input 
                                 value={input} 
-                                onChange={handleInputChange} 
+                                onChange={(e) => setInput(e.target.value)} 
                                 placeholder="Type your message..." 
                                 style={{ flex: 1, padding: '0.8rem', borderRadius: '8px', border: '1px solid var(--card-border)', background: 'transparent', color: 'var(--text-main)', outline: 'none' }}
                             />
