@@ -141,12 +141,7 @@ export function Chatbot() {
                                 <div style={{ alignSelf: 'flex-start', background: 'var(--bg-main)', border: '1px solid var(--card-border)', padding: '0.8rem 1rem', borderRadius: '15px', borderBottomLeftRadius: '2px', color: 'var(--text-main)', opacity: 0.7, fontSize: '0.95rem' }}>
                                     Thinking...
                                 </div>
-                            )}
-                            {error && (
-                                <div style={{ alignSelf: 'flex-start', background: 'var(--bg-main)', border: '1px solid var(--card-border)', padding: '0.8rem 1rem', borderRadius: '15px', borderBottomLeftRadius: '2px', color: '#ff4444', fontSize: '0.95rem' }}>
-                                    Sorry, I encountered an error. Please try again.
-                                </div>
-                            )}
+
                             <div ref={messagesEndRef} />
                         </div>
 
