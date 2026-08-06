@@ -180,7 +180,7 @@ export default function Home() {
             {/* Navigation */}
             <nav id="navbar" className={scrolled ? 'scrolled' : ''}>
                 <div className="nav-container">
-                    <a href="#home" className="logo-link"><img src="/assets/logo.jpg" alt="IronSoul Logo" className="nav-logo" style={{ borderRadius: '5px' }} /></a>
+                    <a href="#home" className="logo-link"><img src="/assets/logo.jpg" alt="IronSoul Logo" className="nav-logo premium-logo" /></a>
                     <ul className={`nav-links ${navActive ? 'active' : ''}`}>
                         <Magnetic><li><a href="#home" onClick={closeNav}>Home</a></li></Magnetic>
                         <Magnetic><li><a href="#about" onClick={closeNav}>About</a></li></Magnetic>
